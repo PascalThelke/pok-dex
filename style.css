@@ -1,0 +1,15 @@
+body{
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+}
+
+#pokedex{
+    min-height: 50vh;
+    background-color: lightgreen;
+    color: white;
+    display: flex;
+}
+
+#pokemonPicture{
+   
+}
