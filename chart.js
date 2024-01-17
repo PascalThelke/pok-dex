@@ -8,15 +8,17 @@ function renderChart() {
             datasets: [{
                 label: false,
                 data: chartDataStats,
-                borderWidth: 3
+                borderWidth: 2,
+                fill: true,
+ 
             }]
         },
         options: {
-            plugins:{
+            plugins: {
                 legend: {
-                 display: false
+                    display: false
                 }
-               },
+            },
             scales: {
                 r: {
                     angleLines: {

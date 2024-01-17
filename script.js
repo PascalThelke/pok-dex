@@ -1,4 +1,5 @@
 let currentPokemon;
+let statusContainer;
 let chartDataStats = [];
 let chartDataLabel = [];
 
@@ -42,24 +43,27 @@ function renderAbout() {
   let aboutContainer = document.getElementById('pokemonInfo');
   aboutContainer.innerHTML = ``;
   aboutContainer.innerHTML += `
-  <div>  ${currentPokemon}
+  <div>  ${currentPokemon['name']} </div>
   `;
 
 
 }
 
 function renderStats() {
-  let statusContainer = document.getElementById('pokemonStatus');
+  let statusContainer = document.getElementById('pokemonInfo');
   statusContainer.innerHTML = ``;
+  statusContainer.innerHTML = `
+    <div>
+      <canvas id="statChart"></canvas>
+    </div>
+  `;
   for (let i = 0; i < currentPokemon['stats'].length; i++) {
     const singleStatName = currentPokemon['stats'][i]['stat']['name'];
     const singleStatValue = currentPokemon['stats'][i]['base_stat'];
     chartDataStats.push(singleStatValue);
     chartDataLabel.push(singleStatName);
     statusContainer.innerHTML += `
-    <div>
-      <canvas id="statChart"></canvas>
-    </div>
+    
     <div class="singleStatLine">
       <div> 
         ${singleStatName} 
@@ -74,4 +78,10 @@ function renderStats() {
   `;
   }
   renderChart();
+}
+
+function renderStatChart(){
+  statusContainer.innerHTML = ``;
+  
+  
 }
