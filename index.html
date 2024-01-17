@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="fonts.css">
     <script src="script.js"></script>
+    <script src="chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 
@@ -35,11 +37,23 @@
 
     <div id="infobox">
         <nav>
-            <span>About</span>
-            <span>Stats</span>
+            <span onclick="renderAbout()">About</span>
+            <span onclick="renderStats()">Stats</span>
             <span>Evolution</span>
             <span>Attacks</span>
         </nav>
+        <div id="pokemonInfo">
+        
+        </div>
+        <div id="pokemonStatus">
+
+        </div>
+        <div id="pokemonEvolution">
+
+        </div>
+        <div id="pokemonAttacks">
+
+        </div>
     </div>
 
 </body>
