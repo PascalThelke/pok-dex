@@ -52,33 +52,41 @@ function renderAbout() {
 function renderStats() {
   let statusContainer = document.getElementById('pokemonInfo');
   statusContainer.innerHTML = ``;
-  statusContainer.innerHTML = `
+
+  for (let i = 0; i < currentPokemon['stats'].length; i++) {
+    const singleStatName = currentPokemon['stats'][i]['stat']['name'];
+    const singleStatValue = currentPokemon['stats'][i]['base_stat'];
+
+    //  prüft, ob es bereits ein Element im Array gibt, das den gleichen Label-Wert und den gleichen Wert hat wie die aktuellen Werte
+    const isDuplicate = chartDataLabel.some((label, index) => label === singleStatName && chartDataStats[index] === singleStatValue);
+
+    if (!isDuplicate) {
+      chartDataStats.push(singleStatValue);
+      chartDataLabel.push(singleStatName);
+    }
+
+    statusContainer.innerHTML += `
+      <div class="singleStatLine">
+        <div> 
+          ${singleStatName} 
+        </div>
+        <div>
+          ${singleStatValue}
+        </div>
+      </div>
+    `;
+  }
+
+  statusContainer.innerHTML += `
     <div>
       <canvas id="statChart"></canvas>
     </div>
   `;
-  for (let i = 0; i < currentPokemon['stats'].length; i++) {
-    const singleStatName = currentPokemon['stats'][i]['stat']['name'];
-    const singleStatValue = currentPokemon['stats'][i]['base_stat'];
-    chartDataStats.push(singleStatValue);
-    chartDataLabel.push(singleStatName);
-    statusContainer.innerHTML += `
-    
-    <div class="singleStatLine">
-      <div> 
-        ${singleStatName} 
-      </div>
-      <div>
-        ${singleStatValue}
-      </div>
-      <div>
-        Bardiagramm
-      </div>
-    </div>
-  `;
-  }
+
   renderChart();
 }
+
+
 
 function renderStatChart(){
   statusContainer.innerHTML = ``;
