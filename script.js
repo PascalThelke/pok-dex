@@ -59,9 +59,10 @@ async function loadSpeciesData() {
 function renderColor() {
   backgroundColor = speciesData['color']['name'];
   console.log('Hintergrundfarbe:', backgroundColor);
-  document.getElementById('pokedex').style.backgroundColor = backgroundColor;
-  document.getElementById('firstType').style.backgroundColor = 'light' + backgroundColor;
-  document.getElementById('secondType').style.backgroundColor = 'light' + backgroundColor;
+  document.getElementById('pokemonId').style.color = backgroundColor;
+  document.getElementById('pokedex').style.backgroundColor = 'light' + backgroundColor;
+  document.getElementById('firstType').style.backgroundColor = backgroundColor;
+  document.getElementById('secondType').style.backgroundColor = backgroundColor;
   let infoLineColor = document.getElementsByClassName('singleInfoLine');
   for (let i = 0; i < infoLineColor.length; i++) {
     const singleLine = infoLineColor[i];
