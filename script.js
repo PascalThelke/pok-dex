@@ -1,37 +1,52 @@
+let pokedexData;
 let currentPokemon;
 let statusContainer;
-let evolutionLine;
+let evolutionData;
+let speciesData;
 let chartDataStats = [];
 let chartDataLabel = [];
 
 
 
 function init() {
+  loadPokedex();
   loadPokemon();
   loadEvolutions();
+  loadSpeciesData();
+  
 }
+
+async function loadPokedex() {
+  let url = 'https://pokeapi.co/api/v2/pokemon?limit=151&offset=0';
+  let response = await fetch(url);
+  pokedexData = await response.json();
+  console.log('loaded Dex: ', pokedexData);
+
+}
+
 
 async function loadPokemon() {
   let url = 'https://pokeapi.co/api/v2/pokemon/bulbasaur';
   let response = await fetch(url);
   currentPokemon = await response.json();
-  console.log('loaded :', currentPokemon);
+  console.log('loaded pokeInfo:', currentPokemon);
 
   renderPokemonInfo();
 }
 
+
 async function loadEvolutions(){
   let url = 'https://pokeapi.co/api/v2/evolution-chain/1/';
   let response = await fetch(url);
-  evolutionLine = await response.json();
-  console.log('info:', evolutionLine);
+  evolutionData = await response.json();
+  console.log('evolution info:', evolutionData);
 }
 
 async function loadSpeciesData(){
   let url = 'https://pokeapi.co/api/v2/pokemon-species/1/';
   let response = await fetch(url);
-  evolutionLine = await response.json();
-  console.log('info:', evolutionLine);
+  speciesData = await response.json();
+  console.log('species info:', speciesData);
 }
 
 function renderPokemonInfo() {
@@ -52,30 +67,49 @@ function renderAbout() {
   aboutContainer.innerHTML = ``;
   aboutContainer.innerHTML += `
 
-<div class="singleInfoLine">
-    <div>
-        Name: 
-    </div>
-    <div> 
-        ${currentPokemon['name']} 
-    </div>
+  <div class="topContainerAbout">
+  <div class="w45">
+      <div class="singleInfoLine">
+          <div>
+              Name :
+          </div>
+          <div>
+              ${capitalizeFirstLetter(currentPokemon['name'])}
+          </div>
+      </div>
+      <div class="singleInfoLine">
+          <div>
+              Art :
+          </div>
+          <div>
+              ${speciesData['genera']['7']['genus']}
+          </div>
+      </div>
+      <div class="singleInfoLine">
+          <div>
+              Weight :
+          </div>
+          <div>
+              ${currentPokemon['weight']}
+          </div>
+      </div>
+      <div class="singleInfoLine">
+          <div>
+              Height :
+          </div>
+          <div>
+              ${currentPokemon['height']}
+          </div>
+      </div>
+  </div>
+  <div class="w45">
+      <div class="singleInfoLine">
+          ${speciesData['flavor_text_entries']['0']['flavor_text']}
+      </div>
+
+  </div>
 </div>
-<div class="singleInfoLine">
-    <div>
-        Weight: 
-    </div>
-    <div> 
-        ${currentPokemon['weight']} 
-    </div>
-</div>
-<div class="singleInfoLine">
-    <div>
-        Height: 
-    </div>
-    <div> 
-        ${currentPokemon['height']} 
-    </div>
-</div>
+
   `;
 
 
