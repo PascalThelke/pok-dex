@@ -82,10 +82,13 @@ nav span:hover {
 }
 
 .singleStatLine {
-    width: 100%;
+    width: 60%;
     display: flex;
     justify-content: space-between;
     margin: 8px;
+    background-color: aliceblue;
+    padding: 4px 16px 4px 16px;
+    border-radius: 12px;
 }
 
 

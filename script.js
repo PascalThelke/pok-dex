@@ -50,15 +50,14 @@ function renderAbout() {
 }
 
 function renderStats() {
-  let statusContainer = document.getElementById('pokemonInfo');
+  statusContainer = document.getElementById('pokemonInfo');
   statusContainer.innerHTML = ``;
 
   for (let i = 0; i < currentPokemon['stats'].length; i++) {
     const singleStatName = currentPokemon['stats'][i]['stat']['name'];
     const singleStatValue = currentPokemon['stats'][i]['base_stat'];
-
     //  prüft, ob es bereits ein Element im Array gibt, das den gleichen Label-Wert und den gleichen Wert hat wie die aktuellen Werte
-    const isDuplicate = chartDataLabel.some((label, index) => label === singleStatName && chartDataStats[index] === singleStatValue);
+    const isDuplicate = chartDataLabel.some((label, i) => label === singleStatName && chartDataStats[i] === singleStatValue);
 
     if (!isDuplicate) {
       chartDataStats.push(singleStatValue);
@@ -67,7 +66,7 @@ function renderStats() {
 
     statusContainer.innerHTML += `
       <div class="singleStatLine">
-        <div> 
+        <div id="statName"> 
           ${singleStatName} 
         </div>
         <div>
@@ -76,20 +75,16 @@ function renderStats() {
       </div>
     `;
   }
-
-  statusContainer.innerHTML += `
-    <div>
-      <canvas id="statChart"></canvas>
-    </div>
-  `;
-
+  renderStatChart();
   renderChart();
 }
 
 
 
 function renderStatChart(){
-  statusContainer.innerHTML = ``;
-  
-  
+  statusContainer.innerHTML += `
+    <div>
+      <canvas id="statChart"></canvas>
+    </div>
+  `;
 }
