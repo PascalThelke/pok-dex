@@ -32,6 +32,7 @@ async function loadPokemon() {
   console.log('loaded pokeInfo:', currentPokemon);
 
   renderPokemonInfo();
+  
 }
 
 
@@ -47,6 +48,7 @@ async function loadSpeciesData(){
   let response = await fetch(url);
   speciesData = await response.json();
   console.log('species info:', speciesData);
+  renderAbout();
 }
 
 function renderPokemonInfo() {
@@ -66,12 +68,11 @@ function renderAbout() {
   let aboutContainer = document.getElementById('pokemonInfo');
   aboutContainer.innerHTML = ``;
   aboutContainer.innerHTML += `
-
 <div class="topContainerAbout">
   <div class="">
       <div class="singleInfoLine">
           <div>
-              Name :
+            <span>Name :</span>
           </div>
           <div>
               ${capitalizeFirstLetter(currentPokemon['name'])}
@@ -79,7 +80,7 @@ function renderAbout() {
       </div>
       <div class="singleInfoLine">
           <div>
-              Species :
+            <span>Species :</span>
           </div>
           <div>
               ${speciesData['genera']['7']['genus']}
@@ -87,7 +88,7 @@ function renderAbout() {
       </div>
       <div class="singleInfoLine">
           <div>
-              Weight :
+            <span> Weight :</span>
           </div>
           <div>
               ${currentPokemon['weight']}
@@ -95,7 +96,7 @@ function renderAbout() {
       </div>
       <div class="singleInfoLine">
           <div>
-              Height :
+            <span>Height :</span>
           </div>
           <div>
               ${currentPokemon['height']}
@@ -105,24 +106,17 @@ function renderAbout() {
   <div class="">
       <div class="singleInfoLine">
           <div>
-              Ability 1 :
+              <span>Abilities :</span>
           </div>
           <div>
-              ${capitalizeFirstLetter(currentPokemon['abilities']['0']['ability']['name'])}
-             
-          </div>
-      </div>
-      <div class="singleInfoLine">
-          <div>
-              Ability 2 :
-          </div>
-          <div>
+              ${capitalizeFirstLetter(currentPokemon['abilities']['0']['ability']['name'])},
               ${capitalizeFirstLetter(currentPokemon['abilities']['1']['ability']['name'])}
           </div>
       </div>
+
       <div class="singleInfoLine">
           <div>
-              Habitat :
+            <span>Habitat :</span>
           </div>
           <div>
               ${capitalizeFirstLetter(speciesData['habitat']['name'])}
@@ -130,7 +124,8 @@ function renderAbout() {
       </div>
   </div>
 </div>
-<div class="singleInfoLine w80">
+<div class="singleInfoLine w80 column">
+  <span>Entry : </span>
   ${speciesData['flavor_text_entries']['0']['flavor_text']}
 </div>
   `;

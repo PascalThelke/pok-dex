@@ -86,10 +86,19 @@ nav span:hover {
     width: 256px;
     display: flex;
     justify-content: space-between;
-    margin: 8px;
+    margin: 16px 0px 4px 0px;
     background-color: lightblue;
     padding: 4px 16px 4px 16px;
     border-radius: 12px;
+}
+
+.singleInfoLine span{
+    font-weight: 600;
+}
+
+.singleInfoLine h2{
+    margin-block-start: 0;
+    margin-block-end: 16px;
 }
 
 
@@ -115,7 +124,6 @@ nav span:hover {
     margin-top: 32px;
     display: flex;
     justify-content: space-evenly;
-    gap: 32px;
     width: 100%;
 }
 
