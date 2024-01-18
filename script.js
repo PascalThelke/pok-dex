@@ -1,6 +1,7 @@
 let pokedexData;
 let currentPokemon;
 let statusContainer;
+let aboutContainer;
 let evolutionData;
 let speciesData;
 let chartDataStats = [];
@@ -16,6 +17,8 @@ function init() {
   
 }
 
+// FetchDataFunktionen
+
 async function loadPokedex() {
   let url = 'https://pokeapi.co/api/v2/pokemon?limit=151&offset=0';
   let response = await fetch(url);
@@ -23,7 +26,6 @@ async function loadPokedex() {
   console.log('loaded Dex: ', pokedexData);
 
 }
-
 
 async function loadPokemon() {
   let url = 'https://pokeapi.co/api/v2/pokemon/bulbasaur';
@@ -34,7 +36,6 @@ async function loadPokemon() {
   renderPokemonInfo();
   
 }
-
 
 async function loadEvolutions(){
   let url = 'https://pokeapi.co/api/v2/evolution-chain/1/';
@@ -51,6 +52,7 @@ async function loadSpeciesData(){
   renderAbout();
 }
 
+
 function renderPokemonInfo() {
   document.getElementById('pokemonName').innerHTML = capitalizeFirstLetter(currentPokemon['name']);
   document.getElementById('firstType').innerHTML = capitalizeFirstLetter(currentPokemon['types']['0']['type']['name']);
@@ -60,8 +62,32 @@ function renderPokemonInfo() {
 
 }
 
+
+function renderStats() {
+  statusContainer = document.getElementById('pokemonInfo');
+  aboutContainer.innerHTML = ``;
+  statusContainer.innerHTML = ``;
+
+  for (let i = 0; i < currentPokemon['stats'].length; i++) {
+    const singleStatName = capitalizeFirstLetter(currentPokemon['stats'][i]['stat']['name']);
+    const singleStatValue = currentPokemon['stats'][i]['base_stat'];
+    //  prüft, ob es bereits ein Element im Array gibt, das den gleichen Label-Wert und den gleichen Wert hat wie die aktuellen Werte
+    const isDuplicate = chartDataLabel.some((label, i) => label === singleStatName && chartDataStats[i] === singleStatValue);
+
+    if (!isDuplicate) {
+      chartDataStats.push(singleStatValue);
+      chartDataLabel.push(singleStatName);
+    }
+    renderStatusTable(i, singleStatValue, singleStatName);
+  }
+  renderStatChart();
+  renderChart();
+}
+
+// RenderHTMLfunktionen
+
 function renderAbout() {
-  let aboutContainer = document.getElementById('pokemonInfo');
+  aboutContainer = document.getElementById('pokemonInfo');
   aboutContainer.innerHTML = ``;
   aboutContainer.innerHTML += `
 <div class="topContainerAbout">
@@ -90,7 +116,6 @@ function renderAbout() {
               ${convertNumberTo100(currentPokemon['weight'])} kg
           </div>
       </div>
-      
   </div>
   <div class="">
       <div class="singleInfoLine">
@@ -122,30 +147,17 @@ function renderAbout() {
   </div>
 </div>
 <div class="singleInfoLine w80 column">
-  <span>Entry : </span>
+  <span>
+    Entry : 
+  </span>
   ${speciesData['flavor_text_entries']['1']['flavor_text']}
 </div>
   `;
 
-
 }
 
-function renderStats() {
-  statusContainer = document.getElementById('pokemonInfo');
-  statusContainer.innerHTML = ``;
-
-  for (let i = 0; i < currentPokemon['stats'].length; i++) {
-    const singleStatName = capitalizeFirstLetter(currentPokemon['stats'][i]['stat']['name']);
-    const singleStatValue = currentPokemon['stats'][i]['base_stat'];
-    //  prüft, ob es bereits ein Element im Array gibt, das den gleichen Label-Wert und den gleichen Wert hat wie die aktuellen Werte
-    const isDuplicate = chartDataLabel.some((label, i) => label === singleStatName && chartDataStats[i] === singleStatValue);
-
-    if (!isDuplicate) {
-      chartDataStats.push(singleStatValue);
-      chartDataLabel.push(singleStatName);
-    }
-
-    statusContainer.innerHTML += `
+function renderStatusTable(i, singleStatValue, singleStatName){
+  statusContainer.innerHTML += `
       <div class="singleInfoLine">
         <div id="statName${[i]}"> 
           ${singleStatName} 
@@ -155,12 +167,7 @@ function renderStats() {
         </div>
       </div>
     `;
-  }
-  renderStatChart();
-  renderChart();
 }
-
-
 
 function renderStatChart(){
   statusContainer.innerHTML += `
