@@ -19,24 +19,16 @@ async function loadPokemon() {
 }
 
 function renderPokemonInfo() {
-  document.getElementById('pokemonName').innerHTML = currentPokemon['name'];
-  capitalizeFirstLetter('pokemonName');
-  document.getElementById('firstType').innerHTML = currentPokemon['types']['0']['type']['name'];
-  capitalizeFirstLetter('firstType');
-  document.getElementById('secondType').innerHTML = currentPokemon['types']['1']['type']['name'];
-  capitalizeFirstLetter('secondType');
+  document.getElementById('pokemonName').innerHTML = capitalizeFirstLetter(currentPokemon['name']);
+  document.getElementById('firstType').innerHTML = capitalizeFirstLetter(currentPokemon['types']['0']['type']['name']);
+  document.getElementById('secondType').innerHTML = capitalizeFirstLetter(currentPokemon['types']['1']['type']['name']);
   document.getElementById('pokemonPicture').src = currentPokemon['sprites']['other']['official-artwork']['front_default'];
   document.getElementById('pokemonId').innerHTML = '#00' + currentPokemon['id'];
 
 }
 
-function capitalizeFirstLetter(elementId) {
-  let element = document.getElementById(elementId);
-  if (element) {
-    let text = element.innerHTML;
-    let capitalizedText = text.charAt(0).toUpperCase() + text.slice(1);
-    element.innerHTML = capitalizedText;
-  }
+function capitalizeFirstLetter(text) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 function renderAbout() {
@@ -54,7 +46,7 @@ function renderStats() {
   statusContainer.innerHTML = ``;
 
   for (let i = 0; i < currentPokemon['stats'].length; i++) {
-    const singleStatName = currentPokemon['stats'][i]['stat']['name'];
+    const singleStatName = capitalizeFirstLetter(currentPokemon['stats'][i]['stat']['name']);
     const singleStatValue = currentPokemon['stats'][i]['base_stat'];
     //  prüft, ob es bereits ein Element im Array gibt, das den gleichen Label-Wert und den gleichen Wert hat wie die aktuellen Werte
     const isDuplicate = chartDataLabel.some((label, i) => label === singleStatName && chartDataStats[i] === singleStatValue);
