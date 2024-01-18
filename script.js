@@ -1,4 +1,5 @@
 let pokedexData;
+let backgroundColor;
 let currentPokemon;
 let statusContainer;
 let aboutContainer;
@@ -14,7 +15,7 @@ function init() {
   loadPokemon();
   loadEvolutions();
   loadSpeciesData();
-  
+
 }
 
 // FetchDataFunktionen
@@ -33,25 +34,42 @@ async function loadPokemon() {
   currentPokemon = await response.json();
   console.log('loaded pokeInfo:', currentPokemon);
 
-  renderPokemonInfo();
-  
+
 }
 
-async function loadEvolutions(){
+async function loadEvolutions() {
   let url = 'https://pokeapi.co/api/v2/evolution-chain/1/';
   let response = await fetch(url);
   evolutionData = await response.json();
   console.log('evolution info:', evolutionData);
 }
 
-async function loadSpeciesData(){
+async function loadSpeciesData() {
   let url = 'https://pokeapi.co/api/v2/pokemon-species/1/';
   let response = await fetch(url);
   speciesData = await response.json();
   console.log('species info:', speciesData);
+  
+  renderPokemonInfo();
   renderAbout();
+  renderColor();
 }
 
+
+function renderColor() {
+  backgroundColor = speciesData['color']['name'];
+  console.log('Hintergrundfarbe:', backgroundColor);
+  document.getElementById('pokedex').style.backgroundColor = backgroundColor;
+  document.getElementById('firstType').style.backgroundColor = 'light' + backgroundColor;
+  document.getElementById('secondType').style.backgroundColor = 'light' + backgroundColor;
+  let infoLineColor = document.getElementsByClassName('singleInfoLine');
+  for (let i = 0; i < infoLineColor.length; i++) {
+    const singleLine = infoLineColor[i];
+    singleLine.style.backgroundColor = 'light' + backgroundColor;
+    
+  }
+  
+}
 
 function renderPokemonInfo() {
   document.getElementById('pokemonName').innerHTML = capitalizeFirstLetter(currentPokemon['name']);
@@ -82,6 +100,7 @@ function renderStats() {
   }
   renderStatChart();
   renderChart();
+  renderColor();
 }
 
 // RenderHTMLfunktionen
@@ -153,10 +172,10 @@ function renderAbout() {
   ${speciesData['flavor_text_entries']['1']['flavor_text']}
 </div>
   `;
-
+  renderColor();
 }
 
-function renderStatusTable(i, singleStatValue, singleStatName){
+function renderStatusTable(i, singleStatValue, singleStatName) {
   statusContainer.innerHTML += `
       <div class="singleInfoLine">
         <div id="statName${[i]}"> 
@@ -169,7 +188,7 @@ function renderStatusTable(i, singleStatValue, singleStatName){
     `;
 }
 
-function renderStatChart(){
+function renderStatChart() {
   statusContainer.innerHTML += `
     <div>
       <canvas id="statChart"></canvas>
@@ -185,7 +204,7 @@ function capitalizeFirstLetter(text) {
 
 function convertNumberTo100(number) {
   return (number / 10).toFixed(1);
-  
+
 }
 
 
