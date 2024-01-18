@@ -79,7 +79,7 @@ function renderAbout() {
       </div>
       <div class="singleInfoLine">
           <div>
-              Art :
+              Species :
           </div>
           <div>
               ${speciesData['genera']['7']['genus']}
