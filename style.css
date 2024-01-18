@@ -83,6 +83,7 @@ nav span:hover {
 }
 
 .singleInfoLine {
+    width: 256px;
     display: flex;
     justify-content: space-between;
     margin: 8px;
@@ -113,7 +114,9 @@ nav span:hover {
 .topContainerAbout{
     margin-top: 32px;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
+    gap: 32px;
+    width: 100%;
 }
 
 .spaceBetw{
@@ -134,6 +137,10 @@ nav span:hover {
 
 .w45 {
     width: 50% !important;
+}
+
+.w80{
+    width: 80% !important;
 }
 
 .w100 {

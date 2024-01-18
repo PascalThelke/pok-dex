@@ -68,7 +68,7 @@ function renderAbout() {
   aboutContainer.innerHTML += `
 
 <div class="topContainerAbout">
-  <div class="w45">
+  <div class="">
       <div class="singleInfoLine">
           <div>
               Name :
@@ -102,37 +102,35 @@ function renderAbout() {
           </div>
       </div>
   </div>
-  <div class="w45">
+  <div class="">
       <div class="singleInfoLine">
           <div>
-              Abilities :
+              Ability 1 :
           </div>
           <div>
-              ${capitalizeFirstLetter(currentPokemon['abilities']['0']['ability']['name'])},
+              ${capitalizeFirstLetter(currentPokemon['abilities']['0']['ability']['name'])}
+             
+          </div>
+      </div>
+      <div class="singleInfoLine">
+          <div>
+              Ability 2 :
+          </div>
+          <div>
               ${capitalizeFirstLetter(currentPokemon['abilities']['1']['ability']['name'])}
           </div>
       </div>
       <div class="singleInfoLine">
           <div>
-              Abilities :
+              Habitat :
           </div>
           <div>
-              ${capitalizeFirstLetter(currentPokemon['abilities']['0']['ability']['name'])},
-              ${capitalizeFirstLetter(currentPokemon['abilities']['1']['ability']['name'])}
-          </div>
-      </div>
-      <div class="singleInfoLine">
-          <div>
-              Abilities :
-          </div>
-          <div>
-              ${capitalizeFirstLetter(currentPokemon['abilities']['0']['ability']['name'])},
-              ${capitalizeFirstLetter(currentPokemon['abilities']['1']['ability']['name'])}
+              ${capitalizeFirstLetter(speciesData['habitat']['name'])}
           </div>
       </div>
   </div>
 </div>
-<div class="singleInfoLine">
+<div class="singleInfoLine w80">
   ${speciesData['flavor_text_entries']['0']['flavor_text']}
 </div>
   `;
