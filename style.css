@@ -86,7 +86,7 @@ nav span:hover {
     width: 256px;
     display: flex;
     justify-content: space-between;
-    margin: 16px 0px 4px 0px;
+    margin: 24px 0px 4px 0px;
     background-color: lightblue;
     padding: 4px 16px 4px 16px;
     border-radius: 12px;

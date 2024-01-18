@@ -60,10 +60,6 @@ function renderPokemonInfo() {
 
 }
 
-function capitalizeFirstLetter(text) {
-  return text.charAt(0).toUpperCase() + text.slice(1);
-}
-
 function renderAbout() {
   let aboutContainer = document.getElementById('pokemonInfo');
   aboutContainer.innerHTML = ``;
@@ -91,17 +87,10 @@ function renderAbout() {
             <span> Weight :</span>
           </div>
           <div>
-              ${currentPokemon['weight']}
+              ${convertNumberTo100(currentPokemon['weight'])} kg
           </div>
       </div>
-      <div class="singleInfoLine">
-          <div>
-            <span>Height :</span>
-          </div>
-          <div>
-              ${currentPokemon['height']}
-          </div>
-      </div>
+      
   </div>
   <div class="">
       <div class="singleInfoLine">
@@ -122,11 +111,19 @@ function renderAbout() {
               ${capitalizeFirstLetter(speciesData['habitat']['name'])}
           </div>
       </div>
+      <div class="singleInfoLine">
+          <div>
+            <span>Height :</span>
+          </div>
+          <div>
+              ${convertNumberTo100(currentPokemon['height'])} m
+          </div>
+      </div>
   </div>
 </div>
 <div class="singleInfoLine w80 column">
   <span>Entry : </span>
-  ${speciesData['flavor_text_entries']['0']['flavor_text']}
+  ${speciesData['flavor_text_entries']['1']['flavor_text']}
 </div>
   `;
 
@@ -172,3 +169,16 @@ function renderStatChart(){
     </div>
   `;
 }
+
+// Hilfsfunktionen
+
+function capitalizeFirstLetter(text) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+function convertNumberTo100(number) {
+  return (number / 10).toFixed(1);
+  
+}
+
+
