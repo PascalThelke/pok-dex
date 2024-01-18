@@ -1,5 +1,6 @@
 let currentPokemon;
 let statusContainer;
+let evolutionLine;
 let chartDataStats = [];
 let chartDataLabel = [];
 
@@ -7,6 +8,7 @@ let chartDataLabel = [];
 
 function init() {
   loadPokemon();
+  loadEvolutions();
 }
 
 async function loadPokemon() {
@@ -16,6 +18,20 @@ async function loadPokemon() {
   console.log('loaded :', currentPokemon);
 
   renderPokemonInfo();
+}
+
+async function loadEvolutions(){
+  let url = 'https://pokeapi.co/api/v2/evolution-chain/1/';
+  let response = await fetch(url);
+  evolutionLine = await response.json();
+  console.log('info:', evolutionLine);
+}
+
+async function loadSpeciesData(){
+  let url = 'https://pokeapi.co/api/v2/pokemon-species/1/';
+  let response = await fetch(url);
+  evolutionLine = await response.json();
+  console.log('info:', evolutionLine);
 }
 
 function renderPokemonInfo() {
@@ -35,7 +51,31 @@ function renderAbout() {
   let aboutContainer = document.getElementById('pokemonInfo');
   aboutContainer.innerHTML = ``;
   aboutContainer.innerHTML += `
-  <div>  ${currentPokemon['name']} </div>
+
+<div class="singleInfoLine">
+    <div>
+        Name: 
+    </div>
+    <div> 
+        ${currentPokemon['name']} 
+    </div>
+</div>
+<div class="singleInfoLine">
+    <div>
+        Weight: 
+    </div>
+    <div> 
+        ${currentPokemon['weight']} 
+    </div>
+</div>
+<div class="singleInfoLine">
+    <div>
+        Height: 
+    </div>
+    <div> 
+        ${currentPokemon['height']} 
+    </div>
+</div>
   `;
 
 
@@ -57,8 +97,8 @@ function renderStats() {
     }
 
     statusContainer.innerHTML += `
-      <div class="singleStatLine">
-        <div id="statName"> 
+      <div class="singleInfoLine">
+        <div id="statName${[i]}"> 
           ${singleStatName} 
         </div>
         <div>

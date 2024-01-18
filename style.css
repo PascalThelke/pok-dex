@@ -31,7 +31,7 @@ body {
 }
 
 #infobox {
-    min-height: 250px;
+    min-height: 50vh;
     background-color: white;
     border-top-left-radius: 40px;
     border-top-right-radius: 40px;
@@ -81,7 +81,7 @@ nav span:hover {
     opacity: 0.4;
 }
 
-.singleStatLine {
+.singleInfoLine {
     width: 60%;
     display: flex;
     justify-content: space-between;
@@ -107,6 +107,11 @@ nav span:hover {
     display: flex;
     width: 100%;
     height: 128px;
+    justify-content: space-between;
+}
+
+.spaceBetw{
+    display: flex;
     justify-content: space-between;
 }
 

@@ -25,7 +25,7 @@ function renderChart() {
                         display: false
                     },
                     suggestedMin: 0,
-                    suggestedMax: 100
+                    suggestedMax: 105
                 }
             }
         }
