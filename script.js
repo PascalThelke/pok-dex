@@ -27,7 +27,7 @@ async function loadPokedex() {
 }
 
 async function loadPokemon(i ,pokemonName) {
-  let url = `https://pokeapi.co/api/v2/pokemon/${lowerFirstLetter(pokemonName)}`;
+  let url = `${pokedexData['results'][i]['url']}`;
   // let speciesURL = pokedexData['results'][i]['url'];
   let response = await fetch(url);
   currentPokemon = await response.json();
@@ -82,7 +82,9 @@ function renderColor() {
 function renderPokemonInfo() {
   document.getElementById('pokemonName').innerHTML = capitalizeFirstLetter(currentPokemon['name']);
   document.getElementById('firstType').innerHTML = capitalizeFirstLetter(currentPokemon['types']['0']['type']['name']);
-  document.getElementById('secondType').innerHTML = capitalizeFirstLetter(currentPokemon['types']['1']['type']['name']);
+  if(currentPokemon['types'].length > 1){
+    document.getElementById('secondType').innerHTML = capitalizeFirstLetter(currentPokemon['types']['1']['type']['name']);
+  }
   document.getElementById('pokemonPicture').src = currentPokemon['sprites']['other']['official-artwork']['front_default'];
   document.getElementById('pokemonId').innerHTML = '#00' + currentPokemon['id'];
 
@@ -122,7 +124,7 @@ function renderPokedex() {
     // console.log(pokemonCard);
     pokedex.innerHTML += `
     <div onclick="loadPokemon(${[i]},'${pokemonCard}')" id="pokemoncard${[i]}" class="pokemoncard">
-    
+      
       ${pokemonCard}
     </div>
     `;
