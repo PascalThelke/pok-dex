@@ -4,13 +4,11 @@ body {
 }
 
 #pokedex {
-    color: white;
     min-height: 50vh;
-    background-color: rgb(71,209,178);
     display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
     padding: 24px;
-    flex-direction: column;
-
 }
 
 #pokemonId{
@@ -19,7 +17,6 @@ body {
     top: 227px;
     opacity: 0.8;
     scale: 6.2;
-
 }
 #pokemonPicture {
     /* position: absolute; */
@@ -83,6 +80,24 @@ nav span:hover {
     opacity: 0.4;
 }
 
+.pokemoncard{
+    background-color: lightblue;
+    height: 100px;
+    width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 24px;
+    font-weight: 600;
+    
+}
+
+.pokemoncard:hover{
+    opacity: 0.6;
+    scale: 1.1;
+    cursor: pointer;
+}
+
 .singleInfoLine {
     width: 256px;
     display: flex;
@@ -110,6 +125,8 @@ nav span:hover {
     padding: 4px;
     border-radius: 24px;
     font-weight: 700;
+    opacity: 0.8;
+    color: white;
     
 }
 

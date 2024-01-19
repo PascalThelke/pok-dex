@@ -10,11 +10,9 @@ let chartDataLabel = [];
 
 
 
-function init() {
-  loadPokedex();
-  loadPokemon();
-  loadEvolutions();
-  loadSpeciesData();
+async function init() {
+  await loadPokedex();
+  renderPokedex();
 
 }
 
@@ -28,12 +26,14 @@ async function loadPokedex() {
 
 }
 
-async function loadPokemon() {
-  let url = 'https://pokeapi.co/api/v2/pokemon/bulbasaur';
+async function loadPokemon(pokemonName) {
+  let url = `https://pokeapi.co/api/v2/pokemon/${lowerFirstLetter(pokemonName)}`;
   let response = await fetch(url);
   currentPokemon = await response.json();
   console.log('loaded pokeInfo:', currentPokemon);
 
+  await loadEvolutions();
+  await loadSpeciesData();
 
 }
 
@@ -49,11 +49,13 @@ async function loadSpeciesData() {
   let response = await fetch(url);
   speciesData = await response.json();
   console.log('species info:', speciesData);
+
+  // renderPokemonInfo();
+  // renderAbout();
+  // renderColor();
   
-  renderPokemonInfo();
-  renderAbout();
-  renderColor();
 }
+
 
 
 function renderColor() {
@@ -67,9 +69,9 @@ function renderColor() {
   for (let i = 0; i < infoLineColor.length; i++) {
     const singleLine = infoLineColor[i];
     singleLine.style.backgroundColor = 'light' + backgroundColor;
-    
+
   }
-  
+
 }
 
 function renderPokemonInfo() {
@@ -105,6 +107,28 @@ function renderStats() {
 }
 
 // RenderHTMLfunktionen
+
+function renderPokedex() {
+  let pokedex = document.getElementById('pokedex');
+  pokedex.innerHTML = ``;
+  for (let i = 0; i < pokedexData['results'].length; i++) {
+    const pokemonCard = capitalizeFirstLetter(pokedexData['results'][i]['name']);
+    // const cardImg = currentPokemon['sprites']['other']['official-artwork']['front_default'];
+    console.log(pokemonCard);
+    pokedex.innerHTML += `
+    <div onclick="loadPokemon('${pokemonCard}')" id="pokemoncard${[i]}" class="pokemoncard">
+    
+      ${pokemonCard}
+    </div>
+    `;
+
+  }
+}
+// {/* <img src="${cardImg}" alt="${currentPokemon.name}"></img> */}
+
+function renderPokemonInfo() {
+
+}
 
 function renderAbout() {
   aboutContainer = document.getElementById('pokemonInfo');
@@ -201,6 +225,10 @@ function renderStatChart() {
 
 function capitalizeFirstLetter(text) {
   return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+function lowerFirstLetter(text) {
+  return text.charAt(0).toLowerCase() + text.slice(1);
 }
 
 function convertNumberTo100(number) {
