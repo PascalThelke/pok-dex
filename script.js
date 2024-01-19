@@ -26,15 +26,20 @@ async function loadPokedex() {
 
 }
 
-async function loadPokemon(pokemonName) {
+async function loadPokemon(i ,pokemonName) {
   let url = `https://pokeapi.co/api/v2/pokemon/${lowerFirstLetter(pokemonName)}`;
+  // let speciesURL = pokedexData['results'][i]['url'];
   let response = await fetch(url);
   currentPokemon = await response.json();
-  console.log('loaded pokeInfo:', currentPokemon);
+  console.log('loaded currentPokemon:', currentPokemon);
 
-  await loadEvolutions();
+  
   await loadSpeciesData();
-
+  renderPokedexHeader(); 
+  renderPokemonInfo();
+  renderAbout();
+  renderColor();
+ 
 }
 
 async function loadEvolutions() {
@@ -45,7 +50,7 @@ async function loadEvolutions() {
 }
 
 async function loadSpeciesData() {
-  let url = 'https://pokeapi.co/api/v2/pokemon-species/1/';
+  let url = currentPokemon['species']['url'];
   let response = await fetch(url);
   speciesData = await response.json();
   console.log('species info:', speciesData);
@@ -114,9 +119,9 @@ function renderPokedex() {
   for (let i = 0; i < pokedexData['results'].length; i++) {
     const pokemonCard = capitalizeFirstLetter(pokedexData['results'][i]['name']);
     // const cardImg = currentPokemon['sprites']['other']['official-artwork']['front_default'];
-    console.log(pokemonCard);
+    // console.log(pokemonCard);
     pokedex.innerHTML += `
-    <div onclick="loadPokemon('${pokemonCard}')" id="pokemoncard${[i]}" class="pokemoncard">
+    <div onclick="loadPokemon(${[i]},'${pokemonCard}')" id="pokemoncard${[i]}" class="pokemoncard">
     
       ${pokemonCard}
     </div>
@@ -126,8 +131,29 @@ function renderPokedex() {
 }
 // {/* <img src="${cardImg}" alt="${currentPokemon.name}"></img> */}
 
-function renderPokemonInfo() {
-
+function renderPokedexHeader() {
+  let container = document.getElementById('pokedex');
+  container.innerHTML =`
+  <div class="pokedexHeader">
+  <div class="column">
+      <h1 id="pokemonName">Name</h1>
+      <div class="typeBox">
+          <div id="firstType">
+              Typ1
+          </div>
+          <div id="secondType">
+              Typ2
+          </div>
+      </div>   
+  </div>
+  <b><h1 id="pokemonId">
+      #id
+  </h1></b>      
+</div>
+<div class="center w100">
+  <img id="pokemonPicture" src="#" alt="">
+</div>
+  `;
 }
 
 function renderAbout() {
