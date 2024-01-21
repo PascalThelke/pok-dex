@@ -13,6 +13,7 @@ let chartDataLabel = [];
 async function init() {
   await loadPokedex();
   renderPokedex();
+  loadAllPokemonInfos();
 
 }
 
@@ -26,20 +27,21 @@ async function loadPokedex() {
 
 }
 
-async function loadPokemon(i ,pokemonName) {
+async function loadPokemon(i, pokemonName) {
+  // let url = `https://pokeapi.co/api/v2/pokemon/${lowerFirstLetter(pokemonName)}`;
   let url = `${pokedexData['results'][i]['url']}`;
   // let speciesURL = pokedexData['results'][i]['url'];
   let response = await fetch(url);
   currentPokemon = await response.json();
   console.log('loaded currentPokemon:', currentPokemon);
 
-  
+
   await loadSpeciesData();
-  renderPokedexHeader(); 
-  renderPokemonInfo();
-  renderAbout();
-  renderColor();
- 
+  // renderPokedexHeader(); 
+  // renderPokemonInfo();
+  // renderAbout();
+  // renderColor();
+
 }
 
 async function loadEvolutions() {
@@ -47,6 +49,7 @@ async function loadEvolutions() {
   let response = await fetch(url);
   evolutionData = await response.json();
   console.log('evolution info:', evolutionData);
+
 }
 
 async function loadSpeciesData() {
@@ -58,7 +61,7 @@ async function loadSpeciesData() {
   // renderPokemonInfo();
   // renderAbout();
   // renderColor();
-  
+
 }
 
 
@@ -79,11 +82,28 @@ function renderColor() {
 
 }
 
+
+async function loadAllPokemonInfos() {
+  for (let i = 0; i < pokedexData['results'].length; i++) {
+    await loadPokemon(i);
+  }
+}
+
+
+function renderPokemonImg(){
+// alle immages in den gerenderten pokedex einfügen - muss noch nach render pokedex erfolgen
+let pokemonSprite = currentPokemon['sprites']['other']['official-artwork']['front_default'];
+let spriteContainer = document.getElementById('pokemoncard');
+spriteContainer.innerHTML += `
+<img src="${pokemonSprite}" alt="">
+`;
+}
+
 function renderPokemonInfo() {
   renderInfoboxHTML();
   document.getElementById('pokemonName').innerHTML = capitalizeFirstLetter(currentPokemon['name']);
   document.getElementById('firstType').innerHTML = capitalizeFirstLetter(currentPokemon['types']['0']['type']['name']);
-  if(currentPokemon['types'].length > 1){
+  if (currentPokemon['types'].length > 1) {
     document.getElementById('secondType').innerHTML = capitalizeFirstLetter(currentPokemon['types']['1']['type']['name']);
   }
   document.getElementById('pokemonPicture').src = currentPokemon['sprites']['other']['official-artwork']['front_default'];
@@ -91,7 +111,31 @@ function renderPokemonInfo() {
 
 }
 
-function renderInfoboxHTML(){
+
+function renderStats() {
+  statusContainer = document.getElementById('pokemonInfo');
+  aboutContainer.innerHTML = ``;
+  statusContainer.innerHTML = ``;
+  for (let i = 0; i < currentPokemon['stats'].length; i++) {
+    const singleStatName = capitalizeFirstLetter(currentPokemon['stats'][i]['stat']['name']);
+    const singleStatValue = currentPokemon['stats'][i]['base_stat'];
+    //  prüft, ob es bereits ein Element im Array gibt, das den gleichen Label-Wert und den gleichen Wert hat wie die aktuellen Werte
+    const isDuplicate = chartDataLabel.some((label, i) => label === singleStatName && chartDataStats[i] === singleStatValue);
+
+    if (!isDuplicate) {
+      chartDataStats.push(singleStatValue);
+      chartDataLabel.push(singleStatName);
+    }
+    renderStatusTable(i, singleStatValue, singleStatName);
+  }
+  renderStatChart();
+  renderChart();
+  renderColor();
+}
+
+// RenderHTMLfunktionen
+
+function renderInfoboxHTML() {
   let pokedex = document.getElementById('pokedex');
   pokedex.innerHTML += `
   <div id="infobox">
@@ -118,30 +162,6 @@ function renderInfoboxHTML(){
 
 }
 
-function renderStats() {
-  statusContainer = document.getElementById('pokemonInfo');
-  aboutContainer.innerHTML = ``;
-  statusContainer.innerHTML = ``;
-
-  for (let i = 0; i < currentPokemon['stats'].length; i++) {
-    const singleStatName = capitalizeFirstLetter(currentPokemon['stats'][i]['stat']['name']);
-    const singleStatValue = currentPokemon['stats'][i]['base_stat'];
-    //  prüft, ob es bereits ein Element im Array gibt, das den gleichen Label-Wert und den gleichen Wert hat wie die aktuellen Werte
-    const isDuplicate = chartDataLabel.some((label, i) => label === singleStatName && chartDataStats[i] === singleStatValue);
-
-    if (!isDuplicate) {
-      chartDataStats.push(singleStatValue);
-      chartDataLabel.push(singleStatName);
-    }
-    renderStatusTable(i, singleStatValue, singleStatName);
-  }
-  renderStatChart();
-  renderChart();
-  renderColor();
-}
-
-// RenderHTMLfunktionen
-
 function renderPokedex() {
   let pokedex = document.getElementById('pokedex');
   pokedex.innerHTML = ``;
@@ -151,7 +171,6 @@ function renderPokedex() {
     // console.log(pokemonCard);
     pokedex.innerHTML += `
     <div onclick="loadPokemon(${[i]},'${pokemonCard}')" id="pokemoncard${[i]}" class="pokemoncard">
-      
       ${pokemonCard}
     </div>
     `;
@@ -162,7 +181,7 @@ function renderPokedex() {
 
 function renderPokedexHeader() {
   let container = document.getElementById('pokedex');
-  container.innerHTML =`
+  container.innerHTML = `
   <div class="pokedexHeader">
   <div class="column">
       <h1 id="pokemonName">Name</h1>
