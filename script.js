@@ -80,6 +80,7 @@ function renderColor() {
 }
 
 function renderPokemonInfo() {
+  renderInfoboxHTML();
   document.getElementById('pokemonName').innerHTML = capitalizeFirstLetter(currentPokemon['name']);
   document.getElementById('firstType').innerHTML = capitalizeFirstLetter(currentPokemon['types']['0']['type']['name']);
   if(currentPokemon['types'].length > 1){
@@ -90,6 +91,32 @@ function renderPokemonInfo() {
 
 }
 
+function renderInfoboxHTML(){
+  let pokedex = document.getElementById('pokedex');
+  pokedex.innerHTML += `
+  <div id="infobox">
+        <nav>
+            <span onclick="renderAbout()">About</span>
+            <span onclick="renderStats()">Base Stats</span>
+            <span>Evolution</span>
+            <span>Attacks</span>
+        </nav>
+        <div id="pokemonInfo">
+        
+        </div>
+        <div id="pokemonStatus">
+
+        </div>
+        <div id="pokemonEvolution">
+
+        </div>
+        <div id="pokemonAttacks">
+
+        </div>
+    </div>
+  `;
+
+}
 
 function renderStats() {
   statusContainer = document.getElementById('pokemonInfo');
@@ -162,6 +189,7 @@ function renderAbout() {
   aboutContainer = document.getElementById('pokemonInfo');
   aboutContainer.innerHTML = ``;
   aboutContainer.innerHTML += `
+  
 <div class="topContainerAbout">
   <div class="">
       <div class="singleInfoLine">
@@ -192,11 +220,10 @@ function renderAbout() {
   <div class="">
       <div class="singleInfoLine">
           <div>
-              <span>Abilities :</span>
+              <span>Ability :</span>
           </div>
           <div>
-              ${capitalizeFirstLetter(currentPokemon['abilities']['0']['ability']['name'])},
-              ${capitalizeFirstLetter(currentPokemon['abilities']['1']['ability']['name'])}
+              ${capitalizeFirstLetter(currentPokemon['abilities']['0']['ability']['name'])}
           </div>
       </div>
 
