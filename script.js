@@ -102,12 +102,11 @@ async function loadAllPokemonInfos() {
     await loadPokemon(i);
     pokemonSprites.push(currentPokemon['sprites']['other']['official-artwork']['front_default']);
   }
-
-  renderPokemonImg(pokemonSprites); // Übergabe des Arrays an die Funktion
+  renderPokemonImg(); 
 }
 
 
-function renderPokemonImg(pokemonSprites) {
+function renderPokemonImg() {
   // Alle Bilder in den gerenderten Pokedex einfügen
   for (let i = 0; i < pokedexData['results'].length; i++) {
     let spriteContainer = document.getElementById(`pokemoncard${i}`);
