@@ -62,7 +62,10 @@ body {
     margin-top: 32px;
 }
 
-
+#pokedexIMG{
+    height: 140px;
+    /* width: 100px; */
+}
 
 nav {
     display: flex;
@@ -82,8 +85,8 @@ nav span:hover {
 
 .pokemoncard{
     background-color: lightblue;
-    height: 100px;
-    width: 150px;
+    height: 150px;
+    width: 250px;
     display: flex;
     align-items: center;
     justify-content: center;

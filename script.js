@@ -7,13 +7,13 @@ let evolutionData;
 let speciesData;
 let chartDataStats = [];
 let chartDataLabel = [];
+let pokemonSprites = [];
 
 
 
 async function init() {
   await loadPokedex();
   renderPokedex();
-  loadAllPokemonInfos();
 
 }
 
@@ -25,6 +25,7 @@ async function loadPokedex() {
   pokedexData = await response.json();
   console.log('loaded Dex: ', pokedexData);
 
+  loadAllPokemonInfos();
 }
 
 async function loadPokemon(i, pokemonName) {
@@ -35,21 +36,23 @@ async function loadPokemon(i, pokemonName) {
   currentPokemon = await response.json();
   console.log('loaded currentPokemon:', currentPokemon);
 
-
   await loadSpeciesData();
-  // renderPokedexHeader(); 
-  // renderPokemonInfo();
-  // renderAbout();
-  // renderColor();
-
 }
 
+async function loadSinglePokemon(i, pokemonName) {
+  await loadPokemon(i, pokemonName);
+  await loadSpeciesData();
+  renderPokedexHeader();
+  renderPokemonInfo();
+  renderAbout();
+  renderColor();
+
+}
 async function loadEvolutions() {
   let url = 'https://pokeapi.co/api/v2/evolution-chain/1/';
   let response = await fetch(url);
   evolutionData = await response.json();
   console.log('evolution info:', evolutionData);
-
 }
 
 async function loadSpeciesData() {
@@ -82,23 +85,6 @@ function renderColor() {
 
 }
 
-
-async function loadAllPokemonInfos() {
-  for (let i = 0; i < pokedexData['results'].length; i++) {
-    await loadPokemon(i);
-  }
-}
-
-
-function renderPokemonImg(){
-// alle immages in den gerenderten pokedex einfügen - muss noch nach render pokedex erfolgen
-let pokemonSprite = currentPokemon['sprites']['other']['official-artwork']['front_default'];
-let spriteContainer = document.getElementById('pokemoncard');
-spriteContainer.innerHTML += `
-<img src="${pokemonSprite}" alt="">
-`;
-}
-
 function renderPokemonInfo() {
   renderInfoboxHTML();
   document.getElementById('pokemonName').innerHTML = capitalizeFirstLetter(currentPokemon['name']);
@@ -111,29 +97,23 @@ function renderPokemonInfo() {
 
 }
 
-
-function renderStats() {
-  statusContainer = document.getElementById('pokemonInfo');
-  aboutContainer.innerHTML = ``;
-  statusContainer.innerHTML = ``;
-  for (let i = 0; i < currentPokemon['stats'].length; i++) {
-    const singleStatName = capitalizeFirstLetter(currentPokemon['stats'][i]['stat']['name']);
-    const singleStatValue = currentPokemon['stats'][i]['base_stat'];
-    //  prüft, ob es bereits ein Element im Array gibt, das den gleichen Label-Wert und den gleichen Wert hat wie die aktuellen Werte
-    const isDuplicate = chartDataLabel.some((label, i) => label === singleStatName && chartDataStats[i] === singleStatValue);
-
-    if (!isDuplicate) {
-      chartDataStats.push(singleStatValue);
-      chartDataLabel.push(singleStatName);
-    }
-    renderStatusTable(i, singleStatValue, singleStatName);
+async function loadAllPokemonInfos() {
+  for (let i = 0; i < pokedexData['results'].length; i++) {
+    await loadPokemon(i);
+    pokemonSprites.push(currentPokemon['sprites']['other']['official-artwork']['front_default']);
   }
-  renderStatChart();
-  renderChart();
-  renderColor();
+
+  renderPokemonImg(pokemonSprites); // Übergabe des Arrays an die Funktion
 }
 
-// RenderHTMLfunktionen
+
+function renderPokemonImg(pokemonSprites) {
+  // Alle Bilder in den gerenderten Pokedex einfügen
+  for (let i = 0; i < pokedexData['results'].length; i++) {
+    let spriteContainer = document.getElementById(`pokemoncard${i}`);
+    spriteContainer.innerHTML += `<img id="pokedexIMG" src="${pokemonSprites[i]}" alt="">`;
+  }
+}
 
 function renderInfoboxHTML() {
   let pokedex = document.getElementById('pokedex');
@@ -162,6 +142,30 @@ function renderInfoboxHTML() {
 
 }
 
+function renderStats() {
+  statusContainer = document.getElementById('pokemonInfo');
+  aboutContainer.innerHTML = ``;
+  statusContainer.innerHTML = ``;
+
+  for (let i = 0; i < currentPokemon['stats'].length; i++) {
+    const singleStatName = capitalizeFirstLetter(currentPokemon['stats'][i]['stat']['name']);
+    const singleStatValue = currentPokemon['stats'][i]['base_stat'];
+    //  prüft, ob es bereits ein Element im Array gibt, das den gleichen Label-Wert und den gleichen Wert hat wie die aktuellen Werte
+    const isDuplicate = chartDataLabel.some((label, i) => label === singleStatName && chartDataStats[i] === singleStatValue);
+
+    if (!isDuplicate) {
+      chartDataStats.push(singleStatValue);
+      chartDataLabel.push(singleStatName);
+    }
+    renderStatusTable(i, singleStatValue, singleStatName);
+  }
+  renderStatChart();
+  renderChart();
+  renderColor();
+}
+
+// RenderHTMLfunktionen
+
 function renderPokedex() {
   let pokedex = document.getElementById('pokedex');
   pokedex.innerHTML = ``;
@@ -170,7 +174,8 @@ function renderPokedex() {
     // const cardImg = currentPokemon['sprites']['other']['official-artwork']['front_default'];
     // console.log(pokemonCard);
     pokedex.innerHTML += `
-    <div onclick="loadPokemon(${[i]},'${pokemonCard}')" id="pokemoncard${[i]}" class="pokemoncard">
+    <div onclick="loadSinglePokemon(${[i]},'${pokemonCard}')" id="pokemoncard${[i]}" class="pokemoncard">
+      
       ${pokemonCard}
     </div>
     `;
