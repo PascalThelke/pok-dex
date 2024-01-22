@@ -41,7 +41,7 @@ async function loadPokemon(i, pokemonName) {
 
 async function loadSinglePokemon(i, pokemonName) {
   await loadPokemon(i, pokemonName);
-  await loadSpeciesData();
+
   renderPokedexHeader();
   renderPokemonInfo();
   renderAbout();
@@ -102,7 +102,7 @@ async function loadAllPokemonInfos() {
     await loadPokemon(i);
     pokemonSprites.push(currentPokemon['sprites']['other']['official-artwork']['front_default']);
   }
-  renderPokemonImg(); 
+  renderPokemonImg();
 }
 
 
@@ -121,19 +121,14 @@ function renderInfoboxHTML() {
         <nav>
             <span onclick="renderAbout()">About</span>
             <span onclick="renderStats()">Base Stats</span>
-            <span>Evolution</span>
-            <span>Attacks</span>
+         
         </nav>
         <div id="pokemonInfo">
         
         </div>
         <div id="pokemonStatus">
-
-        </div>
-        <div id="pokemonEvolution">
-
-        </div>
-        <div id="pokemonAttacks">
+          <div id="statusTable">
+          </div>
 
         </div>
     </div>
@@ -279,6 +274,7 @@ function renderAbout() {
 }
 
 function renderStatusTable(i, singleStatValue, singleStatName) {
+  statusContainer = document.getElementById('statusTable');
   statusContainer.innerHTML += `
       <div class="singleInfoLine">
         <div id="statName${[i]}"> 
@@ -292,6 +288,7 @@ function renderStatusTable(i, singleStatValue, singleStatName) {
 }
 
 function renderStatChart() {
+  statusContainer = document.getElementById('pokemonStatus');
   statusContainer.innerHTML += `
     <div>
       <canvas id="statChart"></canvas>

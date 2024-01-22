@@ -45,7 +45,6 @@ body {
 }
 
 #statChart {
-    margin-top: 40px;
     height: 556px !important;
     width: 556px !important;
     /* background-color: rgb(98,226,203); */
@@ -67,6 +66,17 @@ body {
     /* width: 100px; */
 }
 
+#pokedexIMG:hover{
+    scale: 1.4;
+    transition: all ease-out 0.4s;
+
+}
+
+#pokemonStatus{
+    display: flex;
+    align-items: center;
+}
+
 nav {
     display: flex;
     width: 100%;
@@ -85,18 +95,17 @@ nav span:hover {
 
 .pokemoncard{
     background-color: lightblue;
-    height: 150px;
-    width: 250px;
+    padding: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 24px;
     font-weight: 600;
+    flex-direction: column-reverse;
     
 }
 
 .pokemoncard:hover{
-    opacity: 0.6;
     scale: 1.1;
     cursor: pointer;
 }
