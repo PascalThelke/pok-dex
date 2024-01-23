@@ -100,11 +100,21 @@ async function loadAllPokemonInfos() {
   renderPokedexData();
 }
 
-async function expandPokedex(){
+async function expandPokedexNext(){
   loadedAmountStart = loadedAmountStart + 20;
   
   await loadPokedex();
   renderPokedex();
+  document.getElementById('previousBtn').disabled = false;
+}
+
+async function expandPokedexPrevious(){
+  loadedAmountStart = loadedAmountStart - 20;
+  await loadPokedex();
+  renderPokedex();
+  if (loadedAmountStart > 19) {
+    document.getElementById('previousBtn').disabled = false;
+  }
 }
 
 
@@ -125,27 +135,6 @@ function renderPokedexData() {
   pokemoIDs = [];
 }
 
-function renderInfoboxHTML() {
-  let pokedex = document.getElementById('pokedex');
-  pokedex.innerHTML += `
-  <div id="infobox">
-        <nav>
-            <span onclick="renderAbout()">About</span>
-            <span onclick="renderStats()">Base Stats</span>
-         
-        </nav>
-        <div id="pokemonInfo">
-        
-        </div>
-        <div id="pokemonStatus">
-          <div id="statusTable">
-          </div>
-
-        </div>
-    </div>
-  `;
-
-}
 
 function renderStats() {
   statusContainer = document.getElementById('pokemonInfo');
@@ -171,6 +160,28 @@ function renderStats() {
 
 // RenderHTMLfunktionen
 
+function renderInfoboxHTML() {
+  let pokedex = document.getElementById('pokedex');
+  pokedex.innerHTML += `
+  <div id="infobox">
+        <nav>
+            <span onclick="renderAbout()">About</span>
+            <span onclick="renderStats()">Base Stats</span>
+         
+        </nav>
+        <div id="pokemonInfo">
+        
+        </div>
+        <div id="pokemonStatus">
+          <div id="statusTable">
+          </div>
+
+        </div>
+    </div>
+  `;
+
+}
+
 function renderPokedex() {
   let pokedex = document.getElementById('pokedex');
   pokedex.innerHTML = ``;
@@ -181,15 +192,22 @@ function renderPokedex() {
     pokedex.innerHTML += `
     <div onclick="loadSinglePokemon(${[i]},'${pokemonCardName}')" id="pokemoncard${[i]}" class="pokemoncard">
       ${pokemonCardName}
-
     </div>
     `;
   }
+
+  renderPokedexFooter(pokedex);
+  
+}
+
+function renderPokedexFooter(){
   pokedex.innerHTML +=`
-  <button onclick="expandPokedex()">load more</button>
+  <div class="buttonContainer">
+  <button id="previousBtn" disabled onclick="expandPokedexPrevious()">previous</button>
+  <button onclick="expandPokedexNext()">next</button>
+  </div>
   `;
 }
-// {/* <img src="${cardImg}" alt="${currentPokemon.name}"></img> */}
 
 function renderPokedexHeader() {
   let container = document.getElementById('pokedex');
