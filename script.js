@@ -9,6 +9,7 @@ let chartDataStats = [];
 let chartDataLabel = [];
 let pokemonSprites = [];
 let pokemonTypes = [];
+let pokemonTypes2 = [];
 let pokemoIDs = [];
 let loadedAmountLimit = 20;
 let loadedAmountStart = 0;
@@ -37,7 +38,7 @@ async function loadPokemon(i, pokemonName) {
   let url = `${pokedexData['results'][i]['url']}`;
   let response = await fetch(url);
   currentPokemon = await response.json();
-  // console.log('loaded currentPokemon:', currentPokemon);
+  console.log('loaded currentPokemon:', currentPokemon);
 
   await loadSpeciesData();
 }
@@ -95,6 +96,9 @@ async function loadAllPokemonInfos() {
     await loadPokemon(i);
     pokemonSprites.push(currentPokemon['sprites']['other']['official-artwork']['front_default']);
     pokemonTypes.push(capitalizeFirstLetter(currentPokemon['types']['0']['type']['name']));
+    if (currentPokemon['types'].length > 1) {
+      pokemonTypes2.push(capitalizeFirstLetter(currentPokemon['types']['1']['type']['name']));
+    }
     pokemoIDs.push(currentPokemon['id']);
   }
   renderPokedexData();
@@ -102,7 +106,6 @@ async function loadAllPokemonInfos() {
 
 async function expandPokedexNext(){
   loadedAmountStart = loadedAmountStart + 20;
-  
   await loadPokedex();
   renderPokedex();
   document.getElementById('previousBtn').disabled = false;
@@ -122,16 +125,30 @@ function renderPokedexData() {
   // Alle Daten in den gerenderten Pokedex einfügen
   for (let i = 0; i < pokedexData['results'].length; i++) {
     let pokedexContainer = document.getElementById(`pokemoncard${i}`);
-    pokedexContainer.innerHTML += `
+    // if (currentPokemon['types'].length == 2){
+    //   pokedexContainer.innerHTML += `
+    //   <img id="pokedexIMG" src="${pokemonSprites[i]}" alt="">
+    //   <div class="row w100 spaceBetw">
+    //     <div id="firstType"> ${pokemonTypes[i]} </div>
+    //     <div id="secondType"> ${pokemonTypes2[i]} </div>
+    //   </div>
+    //   <div>#${String(pokemoIDs[i]).padStart(3, '0')}</div>
+    // `;
+    // } 
+    // else {
+      pokedexContainer.innerHTML += `
       <img id="pokedexIMG" src="${pokemonSprites[i]}" alt="">
-      <div id="firstType"> ${pokemonTypes[i]} </div>
-      <div>#${String(pokemoIDs[i]).padStart(3, '0')}</div>
-
+      <div class="row w100 spaceBetw">
+        <div id="firstType"> ${pokemonTypes[i]} </div>
+        <div>#${String(pokemoIDs[i]).padStart(3, '0')}</div>
+      </div>
+      
     `;
-
+    // }
   }
   pokemonSprites = [];
   pokemonTypes = [];
+  pokemonTypes2 = [];
   pokemoIDs = [];
 }
 
