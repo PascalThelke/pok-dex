@@ -9,7 +9,9 @@ let chartDataStats = [];
 let chartDataLabel = [];
 let pokemonSprites = [];
 let pokemonTypes = [];
-let loadedAmount = 20;
+let pokemoIDs = [];
+let loadedAmountLimit = 20;
+let loadedAmountStart = 0;
 
 
 
@@ -22,10 +24,10 @@ async function init() {
 // FetchDataFunktionen
 
 async function loadPokedex() {
-  let url = `https://pokeapi.co/api/v2/pokemon?limit=${loadedAmount}&offset=0`;
+  let url = `https://pokeapi.co/api/v2/pokemon?limit=${loadedAmountLimit}&offset=${loadedAmountStart}`;
   let response = await fetch(url);
   pokedexData = await response.json();
-  // console.log('loaded Dex: ', pokedexData);
+  console.log('loaded Dex: ', pokedexData);
 
   loadAllPokemonInfos();
 }
@@ -33,7 +35,6 @@ async function loadPokedex() {
 async function loadPokemon(i, pokemonName) {
   // let url = `https://pokeapi.co/api/v2/pokemon/${lowerFirstLetter(pokemonName)}`;
   let url = `${pokedexData['results'][i]['url']}`;
-  // let speciesURL = pokedexData['results'][i]['url'];
   let response = await fetch(url);
   currentPokemon = await response.json();
   // console.log('loaded currentPokemon:', currentPokemon);
@@ -50,22 +51,12 @@ async function loadSinglePokemon(i, pokemonName) {
   renderColor();
 
 }
-async function loadEvolutions() {
-  let url = 'https://pokeapi.co/api/v2/evolution-chain/1/';
-  let response = await fetch(url);
-  evolutionData = await response.json();
-  // console.log('evolution info:', evolutionData);
-}
 
 async function loadSpeciesData() {
   let url = currentPokemon['species']['url'];
   let response = await fetch(url);
   speciesData = await response.json();
   // console.log('species info:', speciesData);
-
-  // renderPokemonInfo();
-  // renderAbout();
-  // renderColor();
 
 }
 
@@ -95,7 +86,7 @@ function renderPokemonInfo() {
     document.getElementById('secondType').innerHTML = capitalizeFirstLetter(currentPokemon['types']['1']['type']['name']);
   }
   document.getElementById('pokemonPicture').src = currentPokemon['sprites']['other']['official-artwork']['front_default'];
-  document.getElementById('pokemonId').innerHTML = '#00' + currentPokemon['id'];
+  document.getElementById('pokemonId').innerHTML = '#' + String(currentPokemon['id']).padStart(3, '0');
 
 }
 
@@ -104,29 +95,34 @@ async function loadAllPokemonInfos() {
     await loadPokemon(i);
     pokemonSprites.push(currentPokemon['sprites']['other']['official-artwork']['front_default']);
     pokemonTypes.push(capitalizeFirstLetter(currentPokemon['types']['0']['type']['name']));
+    pokemoIDs.push(currentPokemon['id']);
   }
   renderPokedexData();
 }
 
 async function expandPokedex(){
-  loadedAmount = loadedAmount + 20;
+  loadedAmountStart = loadedAmountStart + 20;
+  
   await loadPokedex();
   renderPokedex();
-
 }
 
 
 function renderPokedexData() {
-  // Alle Bilder in den gerenderten Pokedex einfügen
+  // Alle Daten in den gerenderten Pokedex einfügen
   for (let i = 0; i < pokedexData['results'].length; i++) {
     let pokedexContainer = document.getElementById(`pokemoncard${i}`);
     pokedexContainer.innerHTML += `
       <img id="pokedexIMG" src="${pokemonSprites[i]}" alt="">
-      <div id="firstType"> ${pokemonTypes[i]} <div>
+      <div id="firstType"> ${pokemonTypes[i]} </div>
+      <div>#${String(pokemoIDs[i]).padStart(3, '0')}</div>
 
     `;
 
   }
+  pokemonSprites = [];
+  pokemonTypes = [];
+  pokemoIDs = [];
 }
 
 function renderInfoboxHTML() {
