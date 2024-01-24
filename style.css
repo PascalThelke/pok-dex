@@ -6,7 +6,7 @@ body {
 
 h1{
     margin-block-start: 0;
-    margin-block-end: 0;
+    margin-block-end: 4px;
 }
 
 #pokedex {
@@ -22,8 +22,9 @@ h1{
     position: absolute;
     right: 106px;
     top: 128px;
-    opacity: 0.8;
+    opacity: 0.4;
     scale: 3.6;
+    color: white;
 }
 
 #pokemonPicture {
@@ -35,13 +36,13 @@ h1{
 }
 
 #singleView {
-    width: 368px;
-    position: absolute;
-    top: 10%;
-    left: 40%;
-    bottom: 5%;
+    /* width: 368px; */
+    min-height: 96%;
+    position: fixed;
     border-radius: 48px;
-    box-shadow: 4px 1px 4px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 1px 4px 4px rgba(0, 0, 0, 0.2);
+    /* color: white; */
+    
 }
 
 #infobox {
@@ -61,8 +62,8 @@ h1{
 }
 
 #statChart {
-    height: 556px !important;
-    width: 556px !important;
+    height: 208px !important;
+    width: 208px !important;
     /* background-color: rgb(98,226,203); */
     border-radius: 32px;
     
@@ -130,17 +131,28 @@ nav span:hover {
 }
 
 .singleInfoLine {
-    width: 92%;
+    width: 90%;
     display: flex;
     justify-content: space-between;
     margin: 24px 0px 4px 0px;
     background-color: lightblue;
+    padding: 4px;
+    border-radius: 12px;
+    font-size: 14px;
+    text-wrap: nowrap;
+}
+
+.entryInfo {
+    width: 90%;
+    display: flex;
+    margin: 72px 0px 4px 0px;
+    background-color: lightblue;
     padding: 8px;
     border-radius: 12px;
     font-size: 14px;
-
 }
 
+.entryInfo span,
 .singleInfoLine span{
     font-weight: 600;
 }
@@ -157,8 +169,7 @@ nav span:hover {
     border-radius: 24px;
     font-weight: 700;
     opacity: 0.8;
-    color: white;
-    background-color: lightcoral;
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 #firstType,
@@ -168,9 +179,8 @@ nav span:hover {
     padding: 4px;
     border-radius: 24px;
     font-weight: 700;
-    color: white;
-    background-color: lightcoral;
     z-index: 99;
+    background-color: rgba(255, 255, 255, 0.2);
    
     
 }
@@ -184,9 +194,9 @@ nav span:hover {
 }
 
 .topContainerAbout{
-    margin-top: 8px;
+    margin-top: 24px;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     width: 100%;
 }
 
@@ -235,4 +245,24 @@ nav span:hover {
     flex-direction: row;
     display: flex;
     gap: 8px
+}
+
+
+#portrait {
+    /* height: 100%; */
+    /* width: 100%; */
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
+}
+
+.mid { /* hier wird die single view reingepackt */
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

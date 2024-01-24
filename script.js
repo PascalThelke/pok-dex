@@ -11,7 +11,7 @@ let pokemonSprites = [];
 let pokemonTypes = [];
 let pokemonTypes2 = [];
 let pokemoIDs = [];
-let loadedAmountLimit = 20;
+let loadedAmountLimit = 151;
 let loadedAmountStart = 0;
 
 
@@ -44,12 +44,13 @@ async function loadPokemon(i, pokemonName) {
 }
 
 async function loadSinglePokemon(i, pokemonName) {
+  document.getElementById('singleView').classList.remove(`${backgroundColor}`);
+  document.getElementById('portrait').style.display = 'unset';
   await loadPokemon(i, pokemonName);
-
   renderPokedexHeader();
   renderPokemonInfo();
   renderAbout();
-  renderColor();
+  
 
 }
 
@@ -63,18 +64,19 @@ async function loadSpeciesData() {
 
 
 
-function renderColor() {
-  backgroundColor = speciesData['color']['name'];
-  console.log('Hintergrundfarbe:', backgroundColor);
-  document.getElementById('pokemonId').style.color = backgroundColor;
-  document.getElementById('singleView').style.backgroundColor = 'light' + backgroundColor;
-  document.getElementById('firstType').style.backgroundColor = backgroundColor;
-  document.getElementById('secondType').style.backgroundColor = backgroundColor;
+async function renderColor() {
+  backgroundColor = currentPokemon['types']['0']['type']['name'];
+  document.getElementById('singleView').classList.add(`${backgroundColor}`);
+  // document.getElementById(`pokemoncard`).classList.add(`${backgroundColor}`);
   let infoLineColor = document.getElementsByClassName('singleInfoLine');
   for (let i = 0; i < infoLineColor.length; i++) {
     const singleLine = infoLineColor[i];
-    singleLine.style.backgroundColor = 'light' + backgroundColor;
-
+    singleLine.classList.add(`${backgroundColor}`);
+  }
+  let entryInfoColor = document.getElementsByClassName('entryInfo');
+  for (let i = 0; i < entryInfoColor.length; i++) {
+    const singleEntry = entryInfoColor[i];
+    singleEntry.classList.add(`${backgroundColor}`);
   }
 
 }
@@ -126,17 +128,6 @@ function renderPokedexData() {
   // Alle Daten in den gerenderten Pokedex einfügen
   for (let i = 0; i < pokedexData['results'].length; i++) {
     let pokedexContainer = document.getElementById(`pokemoncard${i}`);
-    // if (currentPokemon['types'].length == 2){
-    //   pokedexContainer.innerHTML += `
-    //   <img id="pokedexIMG" src="${pokemonSprites[i]}" alt="">
-    //   <div class="row w100 spaceBetw">
-    //     <div id="firstType"> ${pokemonTypes[i]} </div>
-    //     <div id="secondType"> ${pokemonTypes2[i]} </div>
-    //   </div>
-    //   <div>#${String(pokemoIDs[i]).padStart(3, '0')}</div>
-    // `;
-    // } 
-    // else {
     pokedexContainer.innerHTML += `
       <img id="pokedexIMG" src="${pokemonSprites[i]}" alt="">
       <div class="row w100 spaceBetw">
@@ -145,8 +136,9 @@ function renderPokedexData() {
       </div>
       
     `;
-    // }
+    document.getElementById('singleView').classList.add(`${backgroundColor}`);
   }
+  
   pokemonSprites = [];
   pokemonTypes = [];
   pokemonTypes2 = [];
@@ -257,7 +249,7 @@ function renderAbout() {
   aboutContainer.innerHTML = ``;
   aboutContainer.innerHTML += `
 <div class="topContainerAbout">
-  <div class="">
+  <div class="w100 center column">
       <div class="singleInfoLine">
           <div>
             <span>Name :</span>
@@ -283,7 +275,7 @@ function renderAbout() {
           </div>
       </div>
   </div>
-  <div class="">
+  <div class="w100 center column">
       <div class="singleInfoLine">
           <div>
               <span>Ability :</span>
@@ -310,7 +302,7 @@ function renderAbout() {
       </div>
   </div>
 </div>
-<div class="singleInfoLine w80 column">
+<div class="entryInfo column">
   <span>
     Entry : 
   </span>
