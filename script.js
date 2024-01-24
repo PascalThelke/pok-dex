@@ -67,7 +67,7 @@ function renderColor() {
   backgroundColor = speciesData['color']['name'];
   console.log('Hintergrundfarbe:', backgroundColor);
   document.getElementById('pokemonId').style.color = backgroundColor;
-  document.getElementById('pokedex').style.backgroundColor = 'light' + backgroundColor;
+  document.getElementById('singleView').style.backgroundColor = 'light' + backgroundColor;
   document.getElementById('firstType').style.backgroundColor = backgroundColor;
   document.getElementById('secondType').style.backgroundColor = backgroundColor;
   let infoLineColor = document.getElementsByClassName('singleInfoLine');
@@ -104,14 +104,15 @@ async function loadAllPokemonInfos() {
   renderPokedexData();
 }
 
-async function expandPokedexNext(){
-  loadedAmountStart = loadedAmountStart + 20;
+async function expandPokedexNext() {
+  // loadedAmountStart = loadedAmountStart + 20;
+  loadedAmountLimit = loadedAmountLimit + 20
   await loadPokedex();
   renderPokedex();
   document.getElementById('previousBtn').disabled = false;
 }
 
-async function expandPokedexPrevious(){
+async function expandPokedexPrevious() {
   loadedAmountStart = loadedAmountStart - 20;
   await loadPokedex();
   renderPokedex();
@@ -136,10 +137,10 @@ function renderPokedexData() {
     // `;
     // } 
     // else {
-      pokedexContainer.innerHTML += `
+    pokedexContainer.innerHTML += `
       <img id="pokedexIMG" src="${pokemonSprites[i]}" alt="">
       <div class="row w100 spaceBetw">
-        <div id="firstType"> ${pokemonTypes[i]} </div>
+        <div id="pokedexType"> ${pokemonTypes[i]} </div>
         <div>#${String(pokemoIDs[i]).padStart(3, '0')}</div>
       </div>
       
@@ -178,7 +179,7 @@ function renderStats() {
 // RenderHTMLfunktionen
 
 function renderInfoboxHTML() {
-  let pokedex = document.getElementById('pokedex');
+  let pokedex = document.getElementById('singleView');
   pokedex.innerHTML += `
   <div id="infobox">
         <nav>
@@ -214,11 +215,11 @@ function renderPokedex() {
   }
 
   renderPokedexFooter(pokedex);
-  
+
 }
 
-function renderPokedexFooter(){
-  pokedex.innerHTML +=`
+function renderPokedexFooter() {
+  pokedex.innerHTML += `
   <div class="buttonContainer">
   <button id="previousBtn" disabled onclick="expandPokedexPrevious()">previous</button>
   <button onclick="expandPokedexNext()">next</button>
@@ -227,7 +228,7 @@ function renderPokedexFooter(){
 }
 
 function renderPokedexHeader() {
-  let container = document.getElementById('pokedex');
+  let container = document.getElementById('singleView');
   container.innerHTML = `
   <div class="pokedexHeader">
   <div class="column">
@@ -255,7 +256,6 @@ function renderAbout() {
   aboutContainer = document.getElementById('pokemonInfo');
   aboutContainer.innerHTML = ``;
   aboutContainer.innerHTML += `
-  
 <div class="topContainerAbout">
   <div class="">
       <div class="singleInfoLine">
@@ -292,7 +292,6 @@ function renderAbout() {
               ${capitalizeFirstLetter(currentPokemon['abilities']['0']['ability']['name'])}
           </div>
       </div>
-
       <div class="singleInfoLine">
           <div>
             <span>Habitat :</span>
