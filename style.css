@@ -20,10 +20,10 @@ h1{
 
 #pokemonId {
     position: absolute;
-    right: 106px;
-    top: 128px;
+    right: 197px;
+    top: 173px;
     opacity: 0.4;
-    scale: 3.6;
+    scale: 5.6;
     color: white;
 }
 
@@ -31,13 +31,13 @@ h1{
     /* position: absolute; */
     margin-top: -44px;
     /* top: 192px; */
-    width: 44%;
+    width: 256px;
     z-index: 99;
 }
 
 #singleView {
-    /* width: 368px; */
-    min-height: 96%;
+    width: 490px;
+    min-height: 90vh;
     position: fixed;
     border-radius: 48px;
     box-shadow: 0px 1px 4px 4px rgba(0, 0, 0, 0.2);
@@ -46,7 +46,7 @@ h1{
 }
 
 #infobox {
-    min-height: 48vh;
+    height: 40vh;
     background-color: white;
     border-top-left-radius: 40px;
     border-top-right-radius: 40px;
@@ -58,16 +58,16 @@ h1{
     align-items: center;
     display: flex;
     flex-direction: column;
-    padding-top: 24px;
+    padding: 24px 0px 24px 0px;
 }
 
-#statChart {
-    height: 208px !important;
-    width: 208px !important;
-    /* background-color: rgb(98,226,203); */
-    border-radius: 32px;
-    
 
+
+#statChart {
+    height: 399px !important;
+    width: 399px !important;
+    display: flex !important;
+    margin: -32px 60px 0px 0px;
 }
 
 #pokemonInfo{
@@ -75,7 +75,8 @@ h1{
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 8px;
+    margin-top: 24px;
+    color: white;
 }
 
 #pokedexIMG{
@@ -122,6 +123,7 @@ nav span:hover {
     flex-direction: column-reverse;
     box-shadow: 4px 1px 4px 2px rgba(0, 0, 0, 0.2);
     width: 124px;
+    color: white;
 }
 
 .pokemoncard:hover{
@@ -134,9 +136,9 @@ nav span:hover {
     width: 90%;
     display: flex;
     justify-content: space-between;
-    margin: 24px 0px 4px 0px;
+    margin: 16px 0px 8px 0px;
     background-color: lightblue;
-    padding: 4px;
+    padding: 4px 8px 4px 8px;
     border-radius: 12px;
     font-size: 14px;
     text-wrap: nowrap;
@@ -145,7 +147,7 @@ nav span:hover {
 .entryInfo {
     width: 90%;
     display: flex;
-    margin: 72px 0px 4px 0px;
+    margin: 24px 0px 4px 0px;
     background-color: lightblue;
     padding: 8px;
     border-radius: 12px;
@@ -191,6 +193,7 @@ nav span:hover {
     height: 128px;
     justify-content: space-between;
     padding: 24px;
+    color: white;
 }
 
 .topContainerAbout{
