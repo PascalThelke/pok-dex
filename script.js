@@ -146,9 +146,9 @@ function renderPokedexData() {
       </div>
     `;
     document.getElementById(`pokedexType${[i]}`).style.display = 'unset'
-    if (currentPokemon['types'].length == 2) {
-    document.getElementById(`secondPokedexType${[i]}`).style.display = 'unset'
-    }
+    // if (currentPokemon['types'].length == 2) {
+    // document.getElementById(`secondPokedexType${[i]}`).style.display = 'unset'
+    // }
     pokedexContainer.classList.add(`${lowerFirstLetter(pokemonTypes[i])}`);
   }
   pokemonSprites = [];
@@ -179,16 +179,17 @@ function loadStats(){
     }
     renderStatusTable(i, singleStatValue, singleStatName);
   }
+  chartDataStats = [];
+  chartDataLabel = [];
 }
 
 function closeView() {
   document.getElementById('portrait').style.display = 'none';
 }
 
-var backgroundContainer = document.getElementById('backgroundContainer');
-backgroundContainer.addEventListener('click', function(event) {
+function noClose(event){
   event.stopPropagation();
-});
+}
 
 // RenderHTMLfunktionen
 
@@ -212,7 +213,7 @@ function renderInfoboxHTML() {
 
 function renderPokedex() {
   let pokedex = document.getElementById('pokedex');
-  
+  pokedex.innerHTML = ``;
   for (let i = 0; i < pokedexData['results'].length; i++) {
     const pokemonCardName = capitalizeFirstLetter(pokedexData['results'][i]['name']);
     // const cardImg = currentPokemon['sprites']['other']['official-artwork']['front_default'];
@@ -254,11 +255,25 @@ function renderPokedexHeader() {
       #id
   </h1></b>      
 </div>
+<div class="pokedex-navcontainer">
+  <div class="center" id="previousPortrait-button">
+  <img src="./img/arrow_left.png" alt="">
+  </div>
+  <div class="center" id="nextPortrait-button" onclick="nextPokemon()">
+    <img src="./img/arrow_right.png" alt="">
+  </div>
+</div>
 <div class="center w100">
   <img id="pokemonPicture" src="#" alt="">
 </div>
+
   `;
 }
+
+function nextPokemon(){
+
+}
+
 
 function renderAbout() {
   aboutContainer = document.getElementById('pokemonInfo');
@@ -364,7 +379,7 @@ function renderStatChart() {
       chartDataLabel.push(singleStatName);
     }
   }
-
+ 
   aboutContainer = document.getElementById('pokemonInfo');
   aboutContainer.innerHTML = `
     <div>
@@ -373,6 +388,8 @@ function renderStatChart() {
   `;
   
   renderChart();
+  chartDataStats = [];
+  chartDataLabel = [];
 }
 
 // Hilfsfunktionen
