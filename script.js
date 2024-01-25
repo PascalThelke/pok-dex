@@ -9,7 +9,7 @@ let pokemonSprites = [];
 let pokemonTypes = [];
 let pokemonTypes2 = [];
 let pokemoIDs = [];
-let loadedAmountLimit = 20;
+let loadedAmountLimit = 250;
 let loadedAmountStart = 0;
 
 
@@ -256,24 +256,36 @@ function renderPokedexHeader() {
   </h1></b>      
 </div>
 <div class="pokedex-navcontainer">
-  <div class="center" id="previousPortrait-button">
+  <button class="center" id="previousPortrait-button" disabled onclick="previousPokemon()">
   <img src="./img/arrow_left.png" alt="">
-  </div>
-  <div class="center" id="nextPortrait-button" onclick="nextPokemon()">
+  </button>
+  <button class="center" id="nextPortrait-button" onclick="nextPokemon()">
     <img src="./img/arrow_right.png" alt="">
-  </div>
+  </button>
 </div>
 <div class="center w100">
   <img id="pokemonPicture" src="#" alt="">
 </div>
 
   `;
+  if(currentPokemon['id'] > 1){
+    document.getElementById('previousPortrait-button').disabled = false;
+  }
 }
 
-function nextPokemon(){
-
+function nextPokemon() {
+  let nextIndex = currentPokemon['id']++;
+  loadSinglePokemon(nextIndex);
+   
 }
 
+function previousPokemon(){
+  let previousIndex = currentPokemon['id'] -2;
+    loadSinglePokemon(previousIndex);
+    if(currentPokemon['id'] === 1){
+      document.getElementById('previousPortrait-button').disabled = true;
+    }
+}
 
 function renderAbout() {
   aboutContainer = document.getElementById('pokemonInfo');

@@ -67,8 +67,16 @@ footer {
     padding: 24px 0px 24px 0px;
 }
 
-#previousPortrait-button,
+#previousPortrait-button{
+    background-color: transparent;
+    border: none;
+    border-radius: 56px;
+    padding: 0px 0px 0px 0px;
+
+}
 #nextPortrait-button{
+    background-color: transparent;
+    border: none;
     border-radius: 56px;
     padding: 0px 0px 0px 0px;
 }
