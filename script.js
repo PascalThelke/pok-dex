@@ -11,14 +11,13 @@ let pokemonTypes2 = [];
 let pokemoIDs = [];
 let loadedAmountLimit = 20;
 let loadedAmountStart = 0;
-let singleStatName;
-let singleStatValue;
 
 
 
 async function init() {
   await loadPokedex();
   renderPokedex();
+
 }
 
 // FetchDataFunktionen
@@ -28,6 +27,7 @@ async function loadPokedex() {
   let response = await fetch(url);
   pokedexData = await response.json();
   console.log('loaded Dex: ', pokedexData);
+
   loadAllPokemonInfos();
 }
 
@@ -37,6 +37,7 @@ async function loadPokemon(i, pokemonName) {
   let response = await fetch(url);
   currentPokemon = await response.json();
   console.log('loaded currentPokemon:', currentPokemon);
+
   await loadSpeciesData();
 }
 
@@ -47,6 +48,8 @@ async function loadSinglePokemon(i, pokemonName) {
   renderPokedexHeader();
   renderPokemonInfo();
   renderAbout();
+  
+
 }
 
 async function loadSpeciesData() {
@@ -54,12 +57,16 @@ async function loadSpeciesData() {
   let response = await fetch(url);
   speciesData = await response.json();
   // console.log('species info:', speciesData);
+
 }
+
+
 
 async function renderColor() {
   backgroundColor = currentPokemon['types']['0']['type']['name'];
   document.getElementById('singleView').classList.add(`${backgroundColor}`);
   // document.getElementById(`pokemoncard`).classList.add(`${backgroundColor}`);
+  
   let infoLineColor = document.getElementsByClassName('singleInfoLine');
   for (let i = 0; i < infoLineColor.length; i++) {
     const singleLine = infoLineColor[i];
@@ -70,6 +77,7 @@ async function renderColor() {
     const singleEntry = entryInfoColor[i];
     singleEntry.classList.add(`${backgroundColor}`);
   }
+
 }
 
 async function pokedexCardColor(){
@@ -84,11 +92,14 @@ function renderPokemonInfo() {
   renderInfoboxHTML();
   document.getElementById('pokemonName').innerHTML = capitalizeFirstLetter(currentPokemon['name']);
   document.getElementById('firstType').innerHTML = capitalizeFirstLetter(currentPokemon['types']['0']['type']['name']);
+  document.getElementById('firstType').style.display = 'unset'
   if (currentPokemon['types'].length == 2) {
     document.getElementById('secondType').innerHTML = capitalizeFirstLetter(currentPokemon['types']['1']['type']['name']);
+    document.getElementById('secondType').style.display = 'unset'
   }
   document.getElementById('pokemonPicture').src = currentPokemon['sprites']['other']['official-artwork']['front_default'];
   document.getElementById('pokemonId').innerHTML = '#' + String(currentPokemon['id']).padStart(3, '0');
+
 }
 
 async function loadAllPokemonInfos() {
@@ -121,19 +132,24 @@ async function expandPokedexPrevious() {
   }
 }
 
+
 function renderPokedexData() {
   // Alle Daten in den gerenderten Pokedex einfügen
   for (let i = 0; i < pokedexData['results'].length; i++) {
     let pokedexContainer = document.getElementById(`pokemoncard${i}`);
-    let backgroundColor = pokemonTypes[i];
     pokedexContainer.innerHTML += `
       <img id="pokedexIMG" src="${pokemonSprites[i]}" alt="">
       <div class="row w100 spaceBetw">
-        <div id="pokedexType">${pokemonTypes[i]}</div>
+        <div id="pokedexType${[i]}">${pokemonTypes[i]}</div>
+        <div id="secondPokedexType${[i]}">${pokemonTypes2[i]}</div>
         <div>#${String(pokemoIDs[i]).padStart(3, '0')}</div>
       </div>
     `;
-    pokedexContainer.classList.add(`${lowerFirstLetter(backgroundColor)}`);
+    document.getElementById(`pokedexType${[i]}`).style.display = 'unset'
+    if (currentPokemon['types'].length == 2) {
+    document.getElementById(`secondPokedexType${[i]}`).style.display = 'unset'
+    }
+    pokedexContainer.classList.add(`${lowerFirstLetter(pokemonTypes[i])}`);
   }
   pokemonSprites = [];
   pokemonTypes = [];
@@ -141,19 +157,22 @@ function renderPokedexData() {
   pokemoIDs = [];
 }
 
+
+
 function renderStats() {
   aboutContainer = document.getElementById('pokemonInfo');
   aboutContainer.innerHTML = ``;
+
   loadStats();
   renderColor();
 }
 
 function loadStats(){
   for (let i = 0; i < currentPokemon['stats'].length; i++) {
-    singleStatName = capitalizeFirstLetter(currentPokemon['stats'][i]['stat']['name']);
-    singleStatValue = currentPokemon['stats'][i]['base_stat'];
+    const singleStatName = capitalizeFirstLetter(currentPokemon['stats'][i]['stat']['name']);
+    const singleStatValue = currentPokemon['stats'][i]['base_stat'];
     //  prüft, ob es bereits ein Element im Array gibt, das den gleichen Label-Wert und den gleichen Wert hat wie die aktuellen Werte
-    const isDuplicate = isDuplicateLabelAndStat(singleStatName, singleStatValue);
+    const isDuplicate = chartDataLabel.some((label, i) => label === singleStatName && chartDataStats[i] === singleStatValue);
     if (!isDuplicate) {
       chartDataStats.push(singleStatValue);
       chartDataLabel.push(singleStatName);
@@ -184,16 +203,20 @@ function renderInfoboxHTML() {
 
 function renderPokedex() {
   let pokedex = document.getElementById('pokedex');
-  pokedex.innerHTML = ``;
+  
   for (let i = 0; i < pokedexData['results'].length; i++) {
     const pokemonCardName = capitalizeFirstLetter(pokedexData['results'][i]['name']);
+    // const cardImg = currentPokemon['sprites']['other']['official-artwork']['front_default'];
+    // console.log(pokemonCard);
     pokedex.innerHTML += `
     <div onclick="loadSinglePokemon(${[i]},'${pokemonCardName}')" id="pokemoncard${[i]}" class="pokemoncard">
       ${pokemonCardName}
     </div>
     `;
   }
+
   renderPokedexFooter(pokedex);
+
 }
 
 function renderPokedexFooter() {
@@ -324,17 +347,22 @@ function renderStatusTable(i, singleStatValue, singleStatName) {
 
 function renderStatChart() {
   for (let i = 0; i < currentPokemon['stats'].length; i++) {
+    const singleStatName = capitalizeFirstLetter(currentPokemon['stats'][i]['stat']['name']);
+    const singleStatValue = currentPokemon['stats'][i]['base_stat'];
     const isDuplicate = isDuplicateLabelAndStat(singleStatName, singleStatValue);
     if (!isDuplicate) {
       chartDataStats.push(singleStatValue);
       chartDataLabel.push(singleStatName);
     }
   }
+
+  aboutContainer = document.getElementById('pokemonInfo');
   aboutContainer.innerHTML = `
     <div>
       <canvas id="statChart"></canvas>
     </div>
   `;
+  
   renderChart();
 }
 
