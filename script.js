@@ -11,13 +11,14 @@ let pokemonTypes2 = [];
 let pokemoIDs = [];
 let loadedAmountLimit = 20;
 let loadedAmountStart = 0;
+let singleStatName;
+let singleStatValue;
 
 
 
 async function init() {
   await loadPokedex();
   renderPokedex();
-
 }
 
 // FetchDataFunktionen
@@ -27,7 +28,6 @@ async function loadPokedex() {
   let response = await fetch(url);
   pokedexData = await response.json();
   console.log('loaded Dex: ', pokedexData);
-
   loadAllPokemonInfos();
 }
 
@@ -37,7 +37,6 @@ async function loadPokemon(i, pokemonName) {
   let response = await fetch(url);
   currentPokemon = await response.json();
   console.log('loaded currentPokemon:', currentPokemon);
-
   await loadSpeciesData();
 }
 
@@ -48,8 +47,6 @@ async function loadSinglePokemon(i, pokemonName) {
   renderPokedexHeader();
   renderPokemonInfo();
   renderAbout();
-  
-
 }
 
 async function loadSpeciesData() {
@@ -57,16 +54,12 @@ async function loadSpeciesData() {
   let response = await fetch(url);
   speciesData = await response.json();
   // console.log('species info:', speciesData);
-
 }
-
-
 
 async function renderColor() {
   backgroundColor = currentPokemon['types']['0']['type']['name'];
   document.getElementById('singleView').classList.add(`${backgroundColor}`);
   // document.getElementById(`pokemoncard`).classList.add(`${backgroundColor}`);
-  
   let infoLineColor = document.getElementsByClassName('singleInfoLine');
   for (let i = 0; i < infoLineColor.length; i++) {
     const singleLine = infoLineColor[i];
@@ -77,7 +70,6 @@ async function renderColor() {
     const singleEntry = entryInfoColor[i];
     singleEntry.classList.add(`${backgroundColor}`);
   }
-
 }
 
 async function pokedexCardColor(){
@@ -97,7 +89,6 @@ function renderPokemonInfo() {
   }
   document.getElementById('pokemonPicture').src = currentPokemon['sprites']['other']['official-artwork']['front_default'];
   document.getElementById('pokemonId').innerHTML = '#' + String(currentPokemon['id']).padStart(3, '0');
-
 }
 
 async function loadAllPokemonInfos() {
@@ -114,8 +105,8 @@ async function loadAllPokemonInfos() {
 }
 
 async function expandPokedexNext() {
-  // loadedAmountStart = loadedAmountStart + 20;
-  loadedAmountLimit = loadedAmountLimit + 20
+  loadedAmountStart = loadedAmountStart + 20;
+  // loadedAmountLimit = loadedAmountLimit + 20
   await loadPokedex();
   renderPokedex();
   document.getElementById('previousBtn').disabled = false;
@@ -129,7 +120,6 @@ async function expandPokedexPrevious() {
     document.getElementById('previousBtn').disabled = false;
   }
 }
-
 
 function renderPokedexData() {
   // Alle Daten in den gerenderten Pokedex einfügen
@@ -151,27 +141,25 @@ function renderPokedexData() {
   pokemoIDs = [];
 }
 
-
-
 function renderStats() {
   aboutContainer = document.getElementById('pokemonInfo');
   aboutContainer.innerHTML = ``;
-  aboutContainer.innerHTML = ``;
+  loadStats();
+  renderColor();
+}
 
+function loadStats(){
   for (let i = 0; i < currentPokemon['stats'].length; i++) {
-    const singleStatName = capitalizeFirstLetter(currentPokemon['stats'][i]['stat']['name']);
-    const singleStatValue = currentPokemon['stats'][i]['base_stat'];
+    singleStatName = capitalizeFirstLetter(currentPokemon['stats'][i]['stat']['name']);
+    singleStatValue = currentPokemon['stats'][i]['base_stat'];
     //  prüft, ob es bereits ein Element im Array gibt, das den gleichen Label-Wert und den gleichen Wert hat wie die aktuellen Werte
-    const isDuplicate = chartDataLabel.some((label, i) => label === singleStatName && chartDataStats[i] === singleStatValue);
-
+    const isDuplicate = isDuplicateLabelAndStat(singleStatName, singleStatValue);
     if (!isDuplicate) {
       chartDataStats.push(singleStatValue);
       chartDataLabel.push(singleStatName);
     }
     renderStatusTable(i, singleStatValue, singleStatName);
   }
- 
-  renderColor();
 }
 
 // RenderHTMLfunktionen
@@ -199,17 +187,13 @@ function renderPokedex() {
   pokedex.innerHTML = ``;
   for (let i = 0; i < pokedexData['results'].length; i++) {
     const pokemonCardName = capitalizeFirstLetter(pokedexData['results'][i]['name']);
-    // const cardImg = currentPokemon['sprites']['other']['official-artwork']['front_default'];
-    // console.log(pokemonCard);
     pokedex.innerHTML += `
     <div onclick="loadSinglePokemon(${[i]},'${pokemonCardName}')" id="pokemoncard${[i]}" class="pokemoncard">
       ${pokemonCardName}
     </div>
     `;
   }
-
   renderPokedexFooter(pokedex);
-
 }
 
 function renderPokedexFooter() {
@@ -339,7 +323,13 @@ function renderStatusTable(i, singleStatValue, singleStatName) {
 }
 
 function renderStatChart() {
-  aboutContainer = document.getElementById('pokemonInfo');
+  for (let i = 0; i < currentPokemon['stats'].length; i++) {
+    const isDuplicate = isDuplicateLabelAndStat(singleStatName, singleStatValue);
+    if (!isDuplicate) {
+      chartDataStats.push(singleStatValue);
+      chartDataLabel.push(singleStatName);
+    }
+  }
   aboutContainer.innerHTML = `
     <div>
       <canvas id="statChart"></canvas>
@@ -363,4 +353,7 @@ function convertNumberTo100(number) {
 
 }
 
-
+function isDuplicateLabelAndStat(label, statValue) {
+  //  prüft, ob es bereits ein Element im Array gibt, das den gleichen Label-Wert und den gleichen Wert hat wie die aktuellen Werte
+  return chartDataLabel.some((existingLabel, i) => existingLabel === label && chartDataStats[i] === statValue);
+}
