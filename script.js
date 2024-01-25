@@ -181,6 +181,15 @@ function loadStats(){
   }
 }
 
+function closeView() {
+  document.getElementById('portrait').style.display = 'none';
+}
+
+var backgroundContainer = document.getElementById('backgroundContainer');
+backgroundContainer.addEventListener('click', function(event) {
+  event.stopPropagation();
+});
+
 // RenderHTMLfunktionen
 
 function renderInfoboxHTML() {
