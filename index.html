@@ -1,34 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokédex</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="fonts.css">
-    <link rel="stylesheet" href="typecolors.css">
-    <script src="script.js"></script>
-    <script src="chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokédex</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="typecolors.css">
+  <script src="script.js"></script>
+  <script src="chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 
 <body onload="init()">
-    <div id="pokedex">
+  <header>
+    <h1>Pokédex</h1>
+  </header>
+  <div id="pokedex">
+  </div>
+  <div class="buttonContainer">
+    <!-- <button id="previousBtn" disabled onclick="expandPokedexPrevious()">previous</button> -->
+    <button onclick="expandPokedexNext()">load more</button>
+    </div>
+  <div id="portrait" onclick="closeView()">
+    <div class="mid">
+      <div id="singleView" onclick="noClose(event)">
+
+      </div>
     </div>
 
-    <div id="portrait" onclick="closeView()">
-        <div class="mid">
-            <div id="singleView" onclick="noClose(event)">
-              
-            </div>
-        </div>
-        
-    </div>
+  </div>
 
   <footer class="center">
     <p>© 2024 Pascal Thelke </p>
   </footer>
 
 </body>
+
 </html>

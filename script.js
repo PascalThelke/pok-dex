@@ -9,7 +9,7 @@ let pokemonSprites = [];
 let pokemonTypes = [];
 let pokemonTypes2 = [];
 let pokemoIDs = [];
-let loadedAmountLimit = 250;
+let loadedAmountLimit = 20; //
 let loadedAmountStart = 0;
 
 
@@ -31,9 +31,9 @@ async function loadPokedex() {
   loadAllPokemonInfos();
 }
 
-async function loadPokemon(i, pokemonName) {
-  // let url = `https://pokeapi.co/api/v2/pokemon/${lowerFirstLetter(pokemonName)}`;
-  let url = `${pokedexData['results'][i]['url']}`;
+async function loadPokemon(i) {
+  let url = `https://pokeapi.co/api/v2/pokemon/${i}`;
+  // let url = `${pokedexData['results'][i]['url']}`;
   let response = await fetch(url);
   currentPokemon = await response.json();
   console.log('loaded currentPokemon:', currentPokemon);
@@ -41,10 +41,11 @@ async function loadPokemon(i, pokemonName) {
   await loadSpeciesData();
 }
 
-async function loadSinglePokemon(i, pokemonName) {
+async function loadSinglePokemon(i) {
   document.getElementById('singleView').classList.remove(`${backgroundColor}`);
   document.getElementById('portrait').style.display = 'unset';
-  await loadPokemon(i, pokemonName);
+  
+  await loadPokemon(i);
   renderPokedexHeader();
   renderPokemonInfo();
   renderAbout();
@@ -104,7 +105,7 @@ function renderPokemonInfo() {
 
 async function loadAllPokemonInfos() {
   for (let i = 0; i < pokedexData['results'].length; i++) {
-    await loadPokemon(i);
+    await loadPokemon((i + 1) + loadedAmountStart);
     pokemonSprites.push(currentPokemon['sprites']['other']['official-artwork']['front_default']);
     pokemonTypes.push(capitalizeFirstLetter(currentPokemon['types']['0']['type']['name']));
     if (currentPokemon['types'].length == 2) {
@@ -115,28 +116,32 @@ async function loadAllPokemonInfos() {
   renderPokedexData();
 }
 
-async function expandPokedexNext() {
-  loadedAmountStart = loadedAmountStart + 20;
-  // loadedAmountLimit = loadedAmountLimit + 20
-  await loadPokedex();
-  renderPokedex();
-  document.getElementById('previousBtn').disabled = false;
+function renderPokedex() {
+  let pokedex = document.getElementById('pokedex');
+  // pokedex.innerHTML = ``;
+  for (let i = 0; i < pokedexData['results'].length; i++) {
+    const pokemonCardName = capitalizeFirstLetter(pokedexData['results'][i]['name']);
+    pokedex.innerHTML += `
+    <div onclick="loadSinglePokemon(${[(i + 1) + loadedAmountStart]})" id="pokemoncard${[i + loadedAmountStart]}" class="pokemoncard">
+      ${pokemonCardName}
+    </div>
+    `;
+  }
 }
 
-async function expandPokedexPrevious() {
-  loadedAmountStart = loadedAmountStart - 20;
+
+async function expandPokedexNext() {
+  loadedAmountStart += 20;
+  // loadedAmountLimit += 20;
   await loadPokedex();
   renderPokedex();
-  if (loadedAmountStart > 19) {
-    document.getElementById('previousBtn').disabled = false;
-  }
 }
 
 
 function renderPokedexData() {
   // Alle Daten in den gerenderten Pokedex einfügen
   for (let i = 0; i < pokedexData['results'].length; i++) {
-    let pokedexContainer = document.getElementById(`pokemoncard${i}`);
+    let pokedexContainer = document.getElementById(`pokemoncard${i + loadedAmountStart}`);
     pokedexContainer.innerHTML += `
       <img id="pokedexIMG" src="${pokemonSprites[i]}" alt="">
       <div class="row w100 spaceBetw">
@@ -145,10 +150,11 @@ function renderPokedexData() {
         <div>#${String(pokemoIDs[i]).padStart(3, '0')}</div>
       </div>
     `;
-    document.getElementById(`pokedexType${[i]}`).style.display = 'unset'
-    // if (currentPokemon['types'].length == 2) {
-    // document.getElementById(`secondPokedexType${[i]}`).style.display = 'unset'
-    // }
+    document.getElementById(`pokedexType${[i]}`).style.display = 'unset';
+    let secondTypeContainer = document.getElementById(`secondPokedexType${[i]}`).innerHTML;
+    if (secondTypeContainer !== 'undefined') {
+      document.getElementById(`secondPokedexType${[i]}`).style.display = 'unset';
+    }
     pokedexContainer.classList.add(`${lowerFirstLetter(pokemonTypes[i])}`);
   }
   pokemonSprites = [];
@@ -211,32 +217,6 @@ function renderInfoboxHTML() {
 
 }
 
-function renderPokedex() {
-  let pokedex = document.getElementById('pokedex');
-  pokedex.innerHTML = ``;
-  for (let i = 0; i < pokedexData['results'].length; i++) {
-    const pokemonCardName = capitalizeFirstLetter(pokedexData['results'][i]['name']);
-    // const cardImg = currentPokemon['sprites']['other']['official-artwork']['front_default'];
-    // console.log(pokemonCard);
-    pokedex.innerHTML += `
-    <div onclick="loadSinglePokemon(${[i]},'${pokemonCardName}')" id="pokemoncard${[i]}" class="pokemoncard">
-      ${pokemonCardName}
-    </div>
-    `;
-  }
-
-  renderPokedexFooter(pokedex);
-
-}
-
-function renderPokedexFooter() {
-  pokedex.innerHTML += `
-  <div class="buttonContainer">
-  <button id="previousBtn" disabled onclick="expandPokedexPrevious()">previous</button>
-  <button onclick="expandPokedexNext()">next</button>
-  </div>
-  `;
-}
 
 function renderPokedexHeader() {
   let container = document.getElementById('singleView');
@@ -271,16 +251,22 @@ function renderPokedexHeader() {
   if(currentPokemon['id'] > 1){
     document.getElementById('previousPortrait-button').disabled = false;
   }
+  
 }
 
 function nextPokemon() {
   let nextIndex = currentPokemon['id']++;
-  loadSinglePokemon(nextIndex);
-   
+  if (nextIndex === loadedAmountLimit + loadedAmountStart ){
+    document.getElementById('nextPortrait-button').disabled = true;
+  }else{
+    loadSinglePokemon(nextIndex);
+  }
+  
+  
 }
 
 function previousPokemon(){
-  let previousIndex = currentPokemon['id'] -2;
+  let previousIndex = currentPokemon['id'] - 2;
     loadSinglePokemon(previousIndex);
     if(currentPokemon['id'] === 1){
       document.getElementById('previousPortrait-button').disabled = true;
