@@ -95,10 +95,10 @@ footer {
 }
 
 #statChart {
-    height: 399px !important;
-    width: 399px !important;
+    height: 347px !important;
+    width: 354px !important;
     display: flex !important;
-    margin: -32px 60px 0px 0px;
+    margin: -10px 60px 0px 0px;
 }
 
 #pokemonInfo {
@@ -106,8 +106,9 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 24px;
     color: white;
+    background-color: rgba(0, 0, 0, 0.1);
+    min-height: 338px;
 }
 
 #pokedexIMG {
@@ -353,15 +354,12 @@ nav span:hover {
 }
 
 .indicator {
-    scale: 1.2;
     padding: 8px;
-    font-weight: 700;
     background-color: rgba(0, 0, 0, 0.1);
-    border-bottom-right-radius: 24px;
-    border-bottom-left-radius: 24px;
+    border-top-right-radius: 24px;
+    border-top-left-radius: 24px;
     transition: all ease-out 0.2s;
     width: 33%;
     text-align: center;
     text-wrap: nowrap;
-
 }
