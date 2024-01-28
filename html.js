@@ -1,9 +1,7 @@
-// RenderHTMLfunktionen
-
 function renderPokedexData() {
     for (let i = 0; i < pokedexData['results'].length; i++) {
-      let pokedexContainer = document.getElementById(`pokemoncard${i + loadedAmountStart}`);
-      pokedexContainer.innerHTML += `
+        let pokedexContainer = document.getElementById(`pokemoncard${i + loadedAmountStart}`);
+        pokedexContainer.innerHTML += `
         <img id="pokedexIMG" src="${pokemonSprites[i]}" alt="">
         <div class="row w100 spaceBetw">
           <div id="pokedexType${[i + loadedAmountStart]}">${pokemonTypes[i]}</div>
@@ -11,26 +9,26 @@ function renderPokedexData() {
           <div>#${String(pokemoIDs[i]).padStart(3, '0')}</div>
         </div>
       `;
-      document.getElementById(`pokedexType${[i + loadedAmountStart]}`).style.display = 'unset';
-      pokedexContainer.classList.add(`${lowerFirstLetter(pokemonTypes[i])}`);
+        document.getElementById(`pokedexType${[i + loadedAmountStart]}`).style.display = 'unset';
+        pokedexContainer.classList.add(`${lowerFirstLetter(pokemonTypes[i])}`);
     }
     pokemonSprites = [];
     pokemonTypes = [];
     pokemonTypes2 = [];
     pokemoIDs = [];
-  }
+}
 
 function renderPokedex() {
     let pokedex = document.getElementById('pokedex');
     for (let i = 0; i < pokedexData['results'].length; i++) {
-      const pokemonCardName = capitalizeFirstLetter(pokedexData['results'][i]['name']);
-      pokedex.innerHTML += `
+        const pokemonCardName = capitalizeFirstLetter(pokedexData['results'][i]['name']);
+        pokedex.innerHTML += `
       <div onclick="loadSinglePokemon(${[(i + 1) + loadedAmountStart]})" id="pokemoncard${[i + loadedAmountStart]}" class="pokemoncard">
         ${pokemonCardName}
       </div>
       `;
     }
-  }
+}
 
 function renderInfoboxHTML() {
     let pokedex = document.getElementById('singleView');
@@ -47,11 +45,9 @@ function renderInfoboxHTML() {
    
       </div>
     `;
-  
-  }
-  
-  
-  function renderPokedexHeader() {
+}
+
+function renderPokedexHeader() {
     let container = document.getElementById('singleView');
     container.innerHTML = `
     <div class="pokedexHeader">
@@ -79,31 +75,13 @@ function renderInfoboxHTML() {
   <div class="center w100">
     <img id="pokemonPicture" src="#" alt="">
   </div>
-  
     `;
     if (currentPokemon['id'] > 1) {
-      document.getElementById('previousPortrait-button').disabled = false;
+        document.getElementById('previousPortrait-button').disabled = false;
     }
-  
-  }
-  
-  function nextPokemon() {
-    let nextIndex = currentPokemon['id'] + 1;
-    if (nextIndex === 387) {
-      nextIndex = 1;
-    }
-    loadSinglePokemon(nextIndex);
-  }
-  
-  function previousPokemon() {
-    let previousIndex = currentPokemon['id'] - 1;
-    if (previousIndex === 0) {
-      previousIndex = 386;
-    }
-    loadSinglePokemon(previousIndex);
-  }
-  
-  function renderAbout() {
+}
+
+function renderAbout() {
     aboutContainer = document.getElementById('pokemonInfo');
     aboutContainer.innerHTML = ``;
     aboutContainer.innerHTML += `
@@ -171,19 +149,19 @@ function renderInfoboxHTML() {
     `;
     renderFlavorText();
     renderColor();
-  }
-  
-  function renderFlavorText() {
+}
+
+function renderFlavorText() {
     for (let i = 0; i < speciesData['flavor_text_entries'].length; i++) {
-      let pokemonFlavorTextData = speciesData['flavor_text_entries'][i];
-      if (pokemonFlavorTextData['language']['name'] == 'en') {
-        let pokemonFlavorText = speciesData['flavor_text_entries'][i]['flavor_text'];
-        document.getElementById('flavorText').innerHTML = pokemonFlavorText;
-      }
+        let pokemonFlavorTextData = speciesData['flavor_text_entries'][i];
+        if (pokemonFlavorTextData['language']['name'] == 'en') {
+            let pokemonFlavorText = speciesData['flavor_text_entries'][i]['flavor_text'];
+            document.getElementById('flavorText').innerHTML = pokemonFlavorText;
+        }
     }
-  }
-  
-  function renderStatusTable(i, singleStatValue, singleStatName) {
+}
+
+function renderStatusTable(i, singleStatValue, singleStatName) {
     aboutContainer = document.getElementById('pokemonInfo');
     aboutContainer.innerHTML += `
         <div class="singleInfoLine">
@@ -195,27 +173,25 @@ function renderInfoboxHTML() {
           </div>
         </div>
       `;
-  }
-  
-  function renderStatChart() {
+}
+
+function renderStatChart() {
     for (let i = 0; i < currentPokemon['stats'].length; i++) {
-      const singleStatName = capitalizeFirstLetter(currentPokemon['stats'][i]['stat']['name']);
-      const singleStatValue = currentPokemon['stats'][i]['base_stat'];
-      const isDuplicate = isDuplicateLabelAndStat(singleStatName, singleStatValue);
-      if (!isDuplicate) {
-        chartDataStats.push(singleStatValue);
-        chartDataLabel.push(singleStatName);
-      }
+        const singleStatName = capitalizeFirstLetter(currentPokemon['stats'][i]['stat']['name']);
+        const singleStatValue = currentPokemon['stats'][i]['base_stat'];
+        const isDuplicate = isDuplicateLabelAndStat(singleStatName, singleStatValue);
+        if (!isDuplicate) {
+            chartDataStats.push(singleStatValue);
+            chartDataLabel.push(singleStatName);
+        }
     }
-  
     aboutContainer = document.getElementById('pokemonInfo');
     aboutContainer.innerHTML = `
       <div>
         <canvas id="statChart"></canvas>
       </div>
     `;
-  
     renderChart();
     chartDataStats = [];
     chartDataLabel = [];
-  }
+}

@@ -133,6 +133,22 @@ function noClose(event) {
   event.stopPropagation();
 }
 
+function nextPokemon() {
+  let nextIndex = currentPokemon['id'] + 1;
+  if (nextIndex === 387) {
+      nextIndex = 1;
+  }
+  loadSinglePokemon(nextIndex);
+}
+
+function previousPokemon() {
+  let previousIndex = currentPokemon['id'] - 1;
+  if (previousIndex === 0) {
+      previousIndex = 386;
+  }
+  loadSinglePokemon(previousIndex);
+}
+
 // Hilfsfunktionen
 
 function capitalizeFirstLetter(text) {

@@ -12,32 +12,27 @@
   <script src="script.js"></script>
   <script src="chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="shortcut icon" href="./img/favicon.ico" type="image/x-icon">
 </head>
-
-
 <body onload="init()">
+  
   <header>
     <h1>Pokédex</h1>
   </header>
   <div id="pokedex">
   </div>
   <div class="buttonContainer">
-    <!-- <button id="previousBtn" disabled onclick="expandPokedexPrevious()">previous</button> -->
     <button onclick="expandPokedexNext()">load more</button>
-    </div>
+  </div>
   <div id="portrait" onclick="closeView()">
     <div class="mid">
       <div id="singleView" onclick="noClose(event)">
-
       </div>
     </div>
-
   </div>
-
   <footer class="center">
     <p>© 2024 Pascal Thelke </p>
   </footer>
 
 </body>
-
 </html>
