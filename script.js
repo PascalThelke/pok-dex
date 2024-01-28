@@ -23,7 +23,6 @@ async function loadPokedex() {
   let url = `https://pokeapi.co/api/v2/pokemon?limit=${loadedAmountLimit}&offset=${loadedAmountStart}`;
   let response = await fetch(url);
   pokedexData = await response.json();
-  console.log('loaded Dex: ', pokedexData);
   loadAllPokemonInfos();
 }
 
@@ -31,12 +30,10 @@ async function loadPokemon(i) {
   let url = `https://pokeapi.co/api/v2/pokemon/${i}`;
   let response = await fetch(url);
   currentPokemon = await response.json();
-  console.log('loaded currentPokemon:', currentPokemon);
   await loadSpeciesData();
 }
 
 async function loadSinglePokemon(i) {
-  document.getElementById('singleView').classList.remove(`${backgroundColor}`);
   document.getElementById('portrait').style.display = 'unset';
   await loadPokemon(i);
   renderPokedexHeader();
