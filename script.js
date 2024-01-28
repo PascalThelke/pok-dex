@@ -104,6 +104,7 @@ async function loadAllPokemonInfos() {
 }
 
 async function expandPokedexNext() {
+  document.getElementById("load-more-button").disabled = true;
   loadedAmountStart += 20;
   await loadPokedex();
   renderPokedex();

@@ -9,9 +9,13 @@ header {
     align-items: center;
     height: 128px;
     border-bottom: 1px solid lightgray;
-    background-color: lightcoral;
+    background-color: #d14040;
     box-shadow: 0px 1px 4px 4px rgba(0, 0, 0, 0.2);
     color: white;
+}
+
+header img{
+    width: 256px;
 }
 
 h1 {
@@ -25,6 +29,8 @@ footer {
     font-size: 12px;
     background-color: lightcoral;
     box-shadow: 0px 1px 4px 4px rgba(0, 0, 0, 0.2);
+    background-color: #d14040;
+    color: white;
 }
 
 #pokedex {
@@ -133,6 +139,7 @@ nav {
     align-items: center;
     font-weight: 600;
     margin-top: 16px;
+    text-wrap: nowrap;
 }
 
 nav span:hover {
@@ -246,6 +253,7 @@ nav span:hover {
     width: 100%;
     display: flex;
     justify-content: space-evenly;
+    padding: 16px;
 }
 
 .spaceBetw {
@@ -341,16 +349,23 @@ nav span:hover {
 
     #singleView {
         min-height: 84vh;
+        
     }
 
     .singleInfoLine {
         margin: 4px 0px 2px 0px;
+        font-size: 12px;
+        padding-left: 8px;
+        padding-right: 8px;
     }
 
     .entryInfo {
         margin: 4px 0px 2px 0px;
     }
 
+    nav{
+        font-size: 12px;
+    }
 }
 
 .indicator {
