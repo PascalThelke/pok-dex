@@ -1,20 +1,20 @@
 body {
     margin: 0;
     font-family: 'Open Sans', sans-serif;
-    
+
 }
 
-header{
- display: flex;
- justify-content: center;
- align-items: center;
- height: 128px;
- border-bottom: 1px solid lightgray;
- background-color: lightcoral;
- box-shadow: 0px 1px 4px 4px rgba(0, 0, 0, 0.2);
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 128px;
+    border-bottom: 1px solid lightgray;
+    background-color: lightcoral;
+    box-shadow: 0px 1px 4px 4px rgba(0, 0, 0, 0.2);
 }
 
-h1{
+h1 {
     margin-block-start: 0;
     margin-block-end: 4px;
 }
@@ -60,7 +60,7 @@ footer {
     border-radius: 48px;
     box-shadow: 0px 1px 4px 4px rgba(0, 0, 0, 0.2);
     /* color: white; */
-    
+
 }
 
 #infobox {
@@ -79,26 +79,24 @@ footer {
     padding: 24px 0px 24px 0px;
 }
 
-#previousPortrait-button{
-    background-color: transparent;
-    border: none;
-    border-radius: 56px;
-    padding: 0px 0px 0px 0px;
 
-}
-#nextPortrait-button{
+#previousPortrait-button,
+#nextPortrait-button {
     background-color: transparent;
     border: none;
     border-radius: 56px;
     padding: 0px 0px 0px 0px;
+    position: relative;
+    z-index: 9999;
 }
 
 #previousPortrait-button:hover,
-#nextPortrait-button:hover{
+#nextPortrait-button:hover {
     cursor: pointer;
     scale: 1.2;
     transition: all ease-out 0.2s;
     background-color: rgba(255, 255, 255, 0.2);
+ 
 }
 
 
@@ -110,7 +108,7 @@ footer {
     margin: -32px 60px 0px 0px;
 }
 
-#pokemonInfo{
+#pokemonInfo {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -119,19 +117,19 @@ footer {
     color: white;
 }
 
-#pokedexIMG{
+#pokedexIMG {
     /* height: 140px; */
     width: 100%;
-    
+
 }
 
-#pokedexIMG:hover{
+#pokedexIMG:hover {
     scale: 1.3;
     transition: all ease-out 0.4s;
     z-index: 99;
 }
 
-#pokemonStatus{
+#pokemonStatus {
     display: flex;
     align-items: center;
 }
@@ -152,7 +150,7 @@ nav span:hover {
     opacity: 0.4;
 }
 
-.pokemoncard{
+.pokemoncard {
     background-color: lightblue;
     padding: 16px;
     display: flex;
@@ -166,13 +164,13 @@ nav span:hover {
     color: white;
 }
 
-.pokemoncard:hover{
+.pokemoncard:hover {
     /* scale: 1.1; */
     cursor: pointer;
     opacity: 0.9;
 }
 
-.pokedex-navcontainer{
+.pokedex-navcontainer {
     display: flex;
     justify-content: space-between;
     position: relative;
@@ -190,6 +188,7 @@ nav span:hover {
     border-radius: 12px;
     font-size: 14px;
     text-wrap: nowrap;
+    box-shadow: 4px 1px 4px 2px rgba(0, 0, 0, 0.2);
 }
 
 .entryInfo {
@@ -200,14 +199,15 @@ nav span:hover {
     padding: 8px;
     border-radius: 12px;
     font-size: 14px;
+    box-shadow: 4px 1px 4px 2px rgba(0, 0, 0, 0.2);
 }
 
 .entryInfo span,
-.singleInfoLine span{
+.singleInfoLine span {
     font-weight: 600;
 }
 
-.singleInfoLine h2{
+.singleInfoLine h2 {
     margin-block-start: 0;
     margin-block-end: 16px;
 }
@@ -234,7 +234,7 @@ nav span:hover {
     z-index: 99;
     background-color: rgba(255, 255, 255, 0.2);
     display: none;
-    
+
 }
 
 .pokedexHeader {
@@ -246,21 +246,21 @@ nav span:hover {
     color: white;
 }
 
-.topContainerAbout{
+.topContainerAbout {
     margin-top: 24px;
     display: flex;
     justify-content: center;
     width: 100%;
 }
 
-.buttonContainer{
+.buttonContainer {
     width: 100%;
     display: flex;
     justify-content: space-evenly;
 
 }
 
-.spaceBetw{
+.spaceBetw {
     display: flex;
     justify-content: space-between;
 }
@@ -280,7 +280,7 @@ nav span:hover {
     width: 50% !important;
 }
 
-.w80{
+.w80 {
     width: 80% !important;
 }
 
@@ -313,9 +313,62 @@ nav span:hover {
     display: none;
 }
 
-.mid { /* hier wird die single view reingepackt */
+.mid {
+    /* hier wird die single view reingepackt */
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+
+@media(max-width:520px) {
+
+    #singleView {
+        width: 90%;
+    }
+
+    #pokemonId {
+        scale: 3.6;
+        right: 137px;
+        top: 150px;
+    }
+
+    #statChart {
+        height: 236px !important;
+        width: 236px !important;
+        display: flex !important;
+        margin: 0px 28px 0px 0px;
+    }
+}
+
+@media(max-width:360px) {
+
+    #pokemonId {
+        scale: 2.6;
+        right: 108px;
+        top: 140px;
+    }
+
+    #pokemonPicture{
+        width: 186px;
+    }
+
+    .topContainerAbout{
+        flex-direction: column;
+        margin-top: 0;
+    }
+
+    #singleView{
+        min-height: 84vh;
+    }
+
+    .singleInfoLine{
+        margin: 4px 0px 2px 0px;
+    }
+    
+    .entryInfo {
+        margin: 4px 0px 2px 0px;
+    }
+
 }

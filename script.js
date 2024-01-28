@@ -44,12 +44,13 @@ async function loadPokemon(i) {
 async function loadSinglePokemon(i) {
   document.getElementById('singleView').classList.remove(`${backgroundColor}`);
   document.getElementById('portrait').style.display = 'unset';
-  
+
   await loadPokemon(i);
   renderPokedexHeader();
   renderPokemonInfo();
   renderAbout();
-  
+  renderStatChart();
+
 
 }
 
@@ -67,7 +68,7 @@ async function renderColor() {
   backgroundColor = currentPokemon['types']['0']['type']['name'];
   document.getElementById('singleView').classList.add(`${backgroundColor}`);
   // document.getElementById(`pokemoncard`).classList.add(`${backgroundColor}`);
-  
+
   let infoLineColor = document.getElementsByClassName('singleInfoLine');
   for (let i = 0; i < infoLineColor.length; i++) {
     const singleLine = infoLineColor[i];
@@ -81,7 +82,7 @@ async function renderColor() {
 
 }
 
-async function pokedexCardColor(){
+async function pokedexCardColor() {
   let pokeCard = document.getElementsByClassName('pokemoncard');
   for (let i = 0; i < pokeCard.length; i++) {
     const singleCard = pokeCard[i];
@@ -108,9 +109,9 @@ async function loadAllPokemonInfos() {
     await loadPokemon((i + 1) + loadedAmountStart);
     pokemonSprites.push(currentPokemon['sprites']['other']['official-artwork']['front_default']);
     pokemonTypes.push(capitalizeFirstLetter(currentPokemon['types']['0']['type']['name']));
-    if (currentPokemon['types'].length == 2) {
-      pokemonTypes2.push(capitalizeFirstLetter(currentPokemon['types']['1']['type']['name']));
-    }
+    // if (currentPokemon['types'].length == 2) {
+    //   pokemonTypes2.push(capitalizeFirstLetter(currentPokemon['types']['1']['type']['name']));
+    // }
     pokemoIDs.push(currentPokemon['id']);
   }
   renderPokedexData();
@@ -145,16 +146,16 @@ function renderPokedexData() {
     pokedexContainer.innerHTML += `
       <img id="pokedexIMG" src="${pokemonSprites[i]}" alt="">
       <div class="row w100 spaceBetw">
-        <div id="pokedexType${[i]}">${pokemonTypes[i]}</div>
-        <div id="secondPokedexType${[i]}">${pokemonTypes2[i]}</div>
+        <div id="pokedexType${[i + loadedAmountStart]}">${pokemonTypes[i]}</div>
+        <div id="secondPokedexType${[i + loadedAmountStart]}">${pokemonTypes2[i]}</div>
         <div>#${String(pokemoIDs[i]).padStart(3, '0')}</div>
       </div>
     `;
-    document.getElementById(`pokedexType${[i]}`).style.display = 'unset';
-    let secondTypeContainer = document.getElementById(`secondPokedexType${[i]}`).innerHTML;
-    if (secondTypeContainer !== 'undefined') {
-      document.getElementById(`secondPokedexType${[i]}`).style.display = 'unset';
-    }
+    document.getElementById(`pokedexType${[i + loadedAmountStart]}`).style.display = 'unset';
+    // let secondTypeContainer = document.getElementById(`secondPokedexType${[i]}`).innerHTML;
+    // // if (secondTypeContainer !== 'undefined') {
+    // //   document.getElementById(`secondPokedexType${[i]}`).style.display = 'unset';
+    // // }
     pokedexContainer.classList.add(`${lowerFirstLetter(pokemonTypes[i])}`);
   }
   pokemonSprites = [];
@@ -173,7 +174,7 @@ function renderStats() {
   renderColor();
 }
 
-function loadStats(){
+function loadStats() {
   for (let i = 0; i < currentPokemon['stats'].length; i++) {
     const singleStatName = capitalizeFirstLetter(currentPokemon['stats'][i]['stat']['name']);
     const singleStatValue = currentPokemon['stats'][i]['base_stat'];
@@ -193,7 +194,7 @@ function closeView() {
   document.getElementById('portrait').style.display = 'none';
 }
 
-function noClose(event){
+function noClose(event) {
   event.stopPropagation();
 }
 
@@ -236,7 +237,7 @@ function renderPokedexHeader() {
   </h1></b>      
 </div>
 <div class="pokedex-navcontainer">
-  <button class="center" id="previousPortrait-button" disabled onclick="previousPokemon()">
+  <button class="center" id="previousPortrait-button" onclick="previousPokemon()">
   <img src="./img/arrow_left.png" alt="">
   </button>
   <button class="center" id="nextPortrait-button" onclick="nextPokemon()">
@@ -248,29 +249,26 @@ function renderPokedexHeader() {
 </div>
 
   `;
-  if(currentPokemon['id'] > 1){
+  if (currentPokemon['id'] > 1) {
     document.getElementById('previousPortrait-button').disabled = false;
   }
-  
+
 }
 
 function nextPokemon() {
-  let nextIndex = currentPokemon['id']++;
-  if (nextIndex === loadedAmountLimit + loadedAmountStart ){
-    document.getElementById('nextPortrait-button').disabled = true;
-  }else{
-    loadSinglePokemon(nextIndex);
+  let nextIndex = currentPokemon['id'] + 1;
+  if (nextIndex === 387) {
+    nextIndex = 1;
   }
-  
-  
+  loadSinglePokemon(nextIndex);
 }
 
-function previousPokemon(){
-  let previousIndex = currentPokemon['id'] - 2;
-    loadSinglePokemon(previousIndex);
-    if(currentPokemon['id'] === 1){
-      document.getElementById('previousPortrait-button').disabled = true;
-    }
+function previousPokemon() {
+  let previousIndex = currentPokemon['id'] - 1;
+  if (previousIndex === 0) {
+    previousIndex = 386;
+  }
+  loadSinglePokemon(previousIndex);
 }
 
 function renderAbout() {
@@ -345,11 +343,11 @@ function renderAbout() {
 
 function renderFlavorText() {
   for (let i = 0; i < speciesData['flavor_text_entries'].length; i++) {
-      let pokemonFlavorTextData = speciesData['flavor_text_entries'][i];
-      if (pokemonFlavorTextData['language']['name'] == 'en') {
-          let pokemonFlavorText = speciesData['flavor_text_entries'][i]['flavor_text'];
-          document.getElementById('flavorText').innerHTML = pokemonFlavorText;
-      }
+    let pokemonFlavorTextData = speciesData['flavor_text_entries'][i];
+    if (pokemonFlavorTextData['language']['name'] == 'en') {
+      let pokemonFlavorText = speciesData['flavor_text_entries'][i]['flavor_text'];
+      document.getElementById('flavorText').innerHTML = pokemonFlavorText;
+    }
   }
 }
 
@@ -377,14 +375,14 @@ function renderStatChart() {
       chartDataLabel.push(singleStatName);
     }
   }
- 
+
   aboutContainer = document.getElementById('pokemonInfo');
   aboutContainer.innerHTML = `
     <div>
       <canvas id="statChart"></canvas>
     </div>
   `;
-  
+
   renderChart();
   chartDataStats = [];
   chartDataLabel = [];
