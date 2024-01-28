@@ -35,9 +35,9 @@ function renderInfoboxHTML() {
     pokedex.innerHTML += `
     <div id="infobox">
           <nav>
-              <span onclick="renderAbout()">About</span>
-              <span onclick="renderStats()">Base Stats</span>
-              <span onclick="renderStatChart()">Status Chart</span>
+              <span id="aboutlink" onclick="renderAbout()">About</span>
+              <span id="statslink" onclick="renderStats()">Base Stats</span>
+              <span id="chartlink" onclick="renderStatChart()">Status Chart</span>
           </nav>
           <div id="pokemonInfo">
           
@@ -82,6 +82,9 @@ function renderPokedexHeader() {
 }
 
 function renderAbout() {
+    document.getElementById('aboutlink').classList.add('indicator');
+    document.getElementById('statslink').classList.remove('indicator');
+    document.getElementById('chartlink').classList.remove('indicator');
     aboutContainer = document.getElementById('pokemonInfo');
     aboutContainer.innerHTML = ``;
     aboutContainer.innerHTML += `
@@ -176,6 +179,9 @@ function renderStatusTable(i, singleStatValue, singleStatName) {
 }
 
 function renderStatChart() {
+    document.getElementById('chartlink').classList.add('indicator');
+  document.getElementById('aboutlink').classList.remove('indicator');
+  document.getElementById('statslink').classList.remove('indicator');
     for (let i = 0; i < currentPokemon['stats'].length; i++) {
         const singleStatName = capitalizeFirstLetter(currentPokemon['stats'][i]['stat']['name']);
         const singleStatValue = currentPokemon['stats'][i]['base_stat'];

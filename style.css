@@ -351,3 +351,9 @@ nav span:hover {
     }
 
 }
+
+.indicator {
+    display: inline-block;
+    border-bottom: 2px solid black; /* Unterstrich-Stil und Farbe */
+    margin-bottom: 4px; /* Abstand nach unten */
+}

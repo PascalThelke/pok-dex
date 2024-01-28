@@ -36,6 +36,7 @@ async function loadPokemon(i) {
 }
 
 async function loadSinglePokemon(i) {
+  document.getElementById('singleView').classList.remove(`${backgroundColor}`);
   document.getElementById('portrait').style.display = 'unset';
   await loadPokemon(i);
   renderPokedexHeader();
@@ -86,7 +87,7 @@ function renderPokemonInfo() {
     document.getElementById('secondType').innerHTML = capitalizeFirstLetter(currentPokemon['types']['1']['type']['name']);
     document.getElementById('secondType').style.display = 'unset';
     document.getElementById('secondType').classList.add(`${currentPokemon['types']['1']['type']['name']}`);
-    document.getElementById('secondType').style.opacity = 0.8;
+    document.getElementById('secondType').style.opacity = 0.9;
   }
   document.getElementById('pokemonPicture').src = currentPokemon['sprites']['other']['official-artwork']['front_default'];
   document.getElementById('pokemonId').innerHTML = '#' + String(currentPokemon['id']).padStart(3, '0');
@@ -109,11 +110,16 @@ async function expandPokedexNext() {
 }
 
 function renderStats() {
+  document.getElementById('statslink').classList.add('indicator');
+  document.getElementById('aboutlink').classList.remove('indicator');
+  document.getElementById('chartlink').classList.remove('indicator');
   aboutContainer = document.getElementById('pokemonInfo');
   aboutContainer.innerHTML = ``;
   loadStats();
   renderColor();
 }
+
+
 
 function loadStats() {
   for (let i = 0; i < currentPokemon['stats'].length; i++) {
