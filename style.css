@@ -353,7 +353,15 @@ nav span:hover {
 }
 
 .indicator {
-    display: inline-block;
-    border-bottom: 2px solid black; /* Unterstrich-Stil und Farbe */
-    margin-bottom: 4px; /* Abstand nach unten */
+    scale: 1.2;
+    padding: 8px;
+    font-weight: 700;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-bottom-right-radius: 24px;
+    border-bottom-left-radius: 24px;
+    transition: all ease-out 0.2s;
+    width: 33%;
+    text-align: center;
+    text-wrap: nowrap;
+
 }
