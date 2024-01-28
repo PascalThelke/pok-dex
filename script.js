@@ -1,5 +1,6 @@
 let pokedexData;
 let backgroundColor;
+let backgroundColor2;
 let currentPokemon;
 let aboutContainer;
 let speciesData;
@@ -33,6 +34,7 @@ async function loadPokemon(i) {
   currentPokemon = await response.json();
   console.log('loaded currentPokemon:', currentPokemon);
   await loadSpeciesData();
+
 }
 
 async function loadSinglePokemon(i) {
@@ -53,6 +55,10 @@ async function loadSpeciesData() {
 
 async function renderColor() {
   backgroundColor = currentPokemon['types']['0']['type']['name'];
+  if (currentPokemon['types'].length == 2) {
+    backgroundColor2 = currentPokemon['types']['1']['type']['name'];
+  }
+
   document.getElementById('singleView').classList.add(`${backgroundColor}`);
   let infoLineColor = document.getElementsByClassName('singleInfoLine');
   for (let i = 0; i < infoLineColor.length; i++) {
@@ -81,7 +87,9 @@ function renderPokemonInfo() {
   document.getElementById('firstType').style.display = 'unset'
   if (currentPokemon['types'].length == 2) {
     document.getElementById('secondType').innerHTML = capitalizeFirstLetter(currentPokemon['types']['1']['type']['name']);
-    document.getElementById('secondType').style.display = 'unset'
+    document.getElementById('secondType').style.display = 'unset';
+    document.getElementById('secondType').classList.add(`${currentPokemon['types']['1']['type']['name']}`);
+    document.getElementById('secondType').style.opacity = 0.8;
   }
   document.getElementById('pokemonPicture').src = currentPokemon['sprites']['other']['official-artwork']['front_default'];
   document.getElementById('pokemonId').innerHTML = '#' + String(currentPokemon['id']).padStart(3, '0');
@@ -136,7 +144,7 @@ function noClose(event) {
 function nextPokemon() {
   let nextIndex = currentPokemon['id'] + 1;
   if (nextIndex === 387) {
-      nextIndex = 1;
+    nextIndex = 1;
   }
   loadSinglePokemon(nextIndex);
 }
@@ -144,7 +152,7 @@ function nextPokemon() {
 function previousPokemon() {
   let previousIndex = currentPokemon['id'] - 1;
   if (previousIndex === 0) {
-      previousIndex = 386;
+    previousIndex = 386;
   }
   loadSinglePokemon(previousIndex);
 }

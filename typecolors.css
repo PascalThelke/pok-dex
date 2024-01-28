@@ -1,88 +1,89 @@
 /* Normal */
 .normal {
-    background-color: #8A8A80;
+    background-color: #8A8A80 !important;
 }
 
 /* Fire */
 .fire {
-    background-color: #CD5C5C;
+    background-color: #CD5C5C !important;
 }
 
 /* Water */
 .water {
-    background-color: #4F94CD;
+    background-color: #4F94CD !important;
 }
 
 /* Grass */
 .grass {
-    background-color: #71C671;
+    background-color: #71C671 !important;
 }
 
 /* Electric */
 .electric {
-    background-color: #FFD700;
+    background-color: #FFD700 !important;
 }
 
 /* Ice */
 .ice {
-    background-color: #87CEEB;
+    background-color: #87CEEB !important;
 }
 
 /* Fighting */
 .fighting {
-    background-color: #A05252;
+    background-color: #A05252 !important;
 }
 
 /* Poison */
 .poison {
-    background-color: #8A2BE2;
+    background-color: #8A2BE2 !important;
 }
 
 /* Ground */
 .ground {
-    background-color: #CD853F;
+    background-color: #CD853F !important;
 }
 
 /* Flying */
 .flying {
-    background-color: #ADD8E6;
+    background-color: #ADD8E6 !important;
 }
 
 /* Psychic */
 .psychic {
-    background-color: #FF69B4;
+    background-color: #FF69B4 !important;
 }
 
 /* Bug */
 .bug {
-    background-color: #9ACD32;
+    background-color: #9ACD32 !important;
 }
 
 /* Rock */
 .rock {
-    background-color: #C0C0C0;
+    background-color: #C0C0C0 !important;
 }
 
 /* Ghost */
 .ghost {
-    background-color: #8B008B;
+    background-color: #8B008B !important;
 }
 
 /* Dark */
 .dark {
-    background-color: #2E2E2E;
+    background-color: #2E2E2E !important;
 }
 
 /* Steel */
 .steel {
-    background-color: #A9A9A9;
+    background-color: #A9A9A9 !important;
 }
 
 /* Fairy */
 .fairy {
-    background-color: #FFB6C1;
+    background-color: #FFB6C1 !important;
 }
 
+/* Dragon */
 .dragon {
-    background-color: #7038F8;
+    background-color: #7038F8 !important;
 }
